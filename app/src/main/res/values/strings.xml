@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">HotShot</string>
+    <!--login-->
+    <string name="login_user_editext_hint"><font size="12">请输入用户名/手机号</font></string>
+    <string name="login_password_editext_hint"><font size="12">请输入密码</font></string>
+    <string name="register_user_wditext_hint"><font size="12">请输入手机号</font></string>
+    <string name="register_verify_wditext_hint"><font size="12">请输入验证码</font></string>
+    <string name="register_password_wditext_hint"><font size="12">请输入最少6位密码</font></string>
+    <string name="title_activity_settings">Settings</string>
+
+
+</resources>
