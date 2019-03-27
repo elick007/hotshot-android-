@@ -42,7 +42,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:textStyle="bold"
+            android:textSize="@dimen/item_text_size_title"
             android:textColor="@color/bottom_navigation_selected" />
         <ImageView
             android:layout_width="16dp"

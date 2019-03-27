@@ -4,14 +4,25 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="@dimen/dp_10">
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
     <TextView
         android:id="@+id/lsp_item_title_normal"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_gravity="top"
-        android:layout_marginLeft="4dp"
+        android:textSize="@dimen/item_text_size_title"
         android:textColor="@color/bottom_navigation_selected"/>
+        <TextView
+            android:id="@+id/lsp_item_author_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:textSize="@dimen/item_text_size_author"
+            android:textColor="@color/bottom_navigation_select"/>
+    </FrameLayout>
     <ImageView
         android:id="@+id/lsp_item_image_normal"
         android:layout_width="162dp"

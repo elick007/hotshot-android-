@@ -379,7 +379,7 @@ public class ExoPlayerControlView extends FrameLayout {
         }
         fullScreenButton = findViewById(R.id.exo_fullscreen);
         if (fullScreenButton != null) {
-            fullScreenButton.setImageResource(R.drawable.fullscreen_image);
+            fullScreenButton.setImageResource(R.drawable.exo_controls_fullscreen_enter);
             fullScreenButton.setOnClickListener(componentListener);
         }
         Resources resources = context.getResources();
@@ -1177,7 +1177,7 @@ public class ExoPlayerControlView extends FrameLayout {
                 } else if (closeButton == view) {
                     if (additionControlViewListener != null) {
                         if (isFullScreen) {
-                            fullScreenButton.setImageResource(R.drawable.fullscreen_image);
+                            fullScreenButton.setImageResource(R.drawable.exo_controls_fullscreen_enter);
                         }
                         additionControlViewListener.onClickCloseButton();
                     }
@@ -1196,9 +1196,9 @@ public class ExoPlayerControlView extends FrameLayout {
 
     public void changeFullScreenImage(boolean isFullScreen) {
         if (isFullScreen) {
-            fullScreenButton.setImageResource(R.drawable.fullscreen_quit);
+            fullScreenButton.setImageResource(R.drawable.exo_controls_fullscreen_exit);
         } else {
-            fullScreenButton.setImageResource(R.drawable.fullscreen_image);
+            fullScreenButton.setImageResource(R.drawable.exo_controls_fullscreen_enter);
         }
     }
 

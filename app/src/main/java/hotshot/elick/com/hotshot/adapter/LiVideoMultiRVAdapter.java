@@ -28,10 +28,12 @@ public class LiVideoMultiRVAdapter extends BaseMultiItemQuickAdapter<VideoBean, 
             case VideoBean.TYPE_HEAD:
                 GlideUtils.loadRoundImage(mContext, item.getCover(), helper.getView(R.id.lsp_item_image_header));
                 helper.setText(R.id.lsp_item_title_header, item.getTitle());
+                helper.setText(R.id.lsp_item_author_header,item.getAuthor());
                 break;
             case VideoBean.TYPE_NORMOL:
                 GlideUtils.loadRoundImage(mContext, item.getCover(), helper.getView(R.id.lsp_item_image_normal));
                 helper.setText(R.id.lsp_item_title_normal, item.getTitle());
+                helper.setText(R.id.lsp_item_author_normal,item.getAuthor());
                 break;
         }
     }

@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="14dp">
+    android:padding="10dp">
     <TextView
         android:id="@+id/oe_item_header_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="今日热门"
         android:textColor="@color/bottom_navigation_selected"
-        android:textSize="20dp"
+        android:textSize="22sp"
         android:textStyle="bold"
         />
     <FrameLayout
@@ -29,7 +29,6 @@
             android:padding="4dp"
             android:gravity="center"
             android:background="@drawable/video_duration_textview_bg"
-            android:text="29:22"
             android:textColor="@color/white"
             android:layout_gravity="bottom|right"
             />
@@ -52,7 +51,7 @@
             android:lines="1"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:textStyle="bold"
+            android:textSize="@dimen/item_text_size_title"
             android:textColor="@color/bottom_navigation_selected" />
         <ImageView
             android:layout_width="16dp"

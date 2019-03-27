@@ -27,7 +27,8 @@
         android:padding="12dp"
         android:layout_gravity="bottom"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:background="@drawable/exo_player_control_bg">
         <ImageView
             android:id="@+id/exo_play"
             android:layout_width="22dp"
@@ -64,8 +65,8 @@
             android:textColor="@color/white" />
         <ImageView
             android:id="@+id/exo_fullscreen"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_marginLeft="16dp" />
     </LinearLayout>
 </FrameLayout>

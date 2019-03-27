@@ -28,7 +28,7 @@
         <activity android:name=".UI.LoginActivity" />
         <activity
             android:name=".UI.activities.PlayerActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize|navigation|screenLayout"
+            android:configChanges="orientation|screenSize|screenLayout"
             android:hardwareAccelerated="true" />
         <activity android:name=".UI.activities.DouyinPlayerActivity"
             android:configChanges="keyboardHidden|navigation|screenLayout"

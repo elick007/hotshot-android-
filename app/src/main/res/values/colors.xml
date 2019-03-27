@@ -11,4 +11,5 @@
     <color name="gray_line_tint">#cfcfcf</color>
     <color name="video_dutation_tv_bg">#333333</color>
     <color name="video_item_dy_tv">#fdfdfe</color>
+    <color name="video_bottom_progress_color">#fdcc44</color>
 </resources>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+<LinearLayout
+    android:id="@+id/exo_gesture_volume_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginLeft="28dp"
+    android:gravity="center"
+    android:layout_gravity="center|left"
+    android:background="@drawable/exo_gesture_item_bg"
+    android:padding="8dp">
+    <View
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:background="@drawable/audio_high"/>
+    <ProgressBar
+        android:id="@+id/exo_gesture_volume_progress"
+        android:layout_width="2dp"
+        android:layout_height="100dp"
+        android:progressDrawable="@drawable/progress_vertical"
+        android:indeterminate="false"
+        android:indeterminateOnly="false"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"/>
+    <View
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:background="@drawable/audio_low"/>
+</LinearLayout>
+    <LinearLayout
+        android:id="@+id/exo_gesture_progress_view"
+        android:layout_width="wrap_content"
+        android:layout_height="86dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:background="@drawable/exo_gesture_item_bg"
+        >
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            />
+        <ProgressBar
+            android:id="@+id/exo_gesture_video_progress"
+            android:layout_width="100dp"
+            android:layout_height="2dp"
+            style="@android:style/Widget.ProgressBar.Horizontal" />
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/exo_gesture_brightness_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginRight="28dp"
+        android:layout_gravity="center|right"
+        android:background="@drawable/exo_gesture_item_bg"
+        android:padding="8dp"
+        >
+        <View
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:background="@drawable/brightness_high" />
+        <ProgressBar
+            android:id="@+id/exo_gesture_brightness_progress"
+            android:layout_width="2dp"
+            android:layout_height="100dp"
+            android:progressDrawable="@drawable/progress_vertical"
+            android:indeterminate="false"
+            android:indeterminateOnly="false"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"/>
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:background="@drawable/brightness_low" />
+    </LinearLayout>
+</FrameLayout>

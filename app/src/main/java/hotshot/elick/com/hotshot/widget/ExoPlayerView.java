@@ -34,10 +34,10 @@ import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.C;
@@ -67,8 +67,7 @@ import com.google.android.exoplayer2.video.VideoListener;
 import java.util.List;
 
 import hotshot.elick.com.hotshot.R;
-
-import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
+import hotshot.elick.com.hotshot.utils.MyLog;
 
 /**
  * A high level view for {@link Player} media playbacks. It displays video, subtitles and album art
@@ -249,6 +248,8 @@ public class ExoPlayerView extends FrameLayout {
     private final ExoPlayerControlView controller;
     private final ComponentListener componentListener;
     private final FrameLayout overlayFrameLayout;
+    private final ProgressBar bottomProgress;
+    private final ExoGestureLayout exoGestureLayout;
 
     private Player player;
     private boolean useController;
@@ -287,6 +288,8 @@ public class ExoPlayerView extends FrameLayout {
             controller = null;
             componentListener = null;
             overlayFrameLayout = null;
+            bottomProgress = null;
+            exoGestureLayout = null;
             ImageView logo = new ImageView(context);
             if (Util.SDK_INT >= 23) {
                 configureEditModeLogoV23(getResources(), logo);
@@ -396,6 +399,11 @@ public class ExoPlayerView extends FrameLayout {
             errorMessageView.setVisibility(View.GONE);
         }
 
+        //bottom timebar
+        bottomProgress = findViewById(R.id.exo_bottom_progress);
+        bottomProgress.setMax(99);
+        //gesture layout
+        exoGestureLayout = findViewById(R.id.exo_gesture_layout);
         // Playback control view.
         ExoPlayerControlView customController = findViewById(R.id.exo_controller);
         View controllerPlaceholder = findViewById(R.id.exo_controller_placeholder);
@@ -466,6 +474,7 @@ public class ExoPlayerView extends FrameLayout {
      * @param player The {@link Player} to use.
      */
     public void setPlayer(Player player) {
+        exoGestureLayout.setPlayer(player);
         if (this.player == player) {
             return;
         }
@@ -497,6 +506,7 @@ public class ExoPlayerView extends FrameLayout {
         }
         updateBuffering();
         updateErrorMessage();
+        updateBottomTimeBar();
         if (player != null) {
             Player.VideoComponent newVideoComponent = player.getVideoComponent();
             if (newVideoComponent != null) {
@@ -518,6 +528,27 @@ public class ExoPlayerView extends FrameLayout {
             hideController();
             hideArtwork();
         }
+    }
+
+    private final Runnable updateBottomTimeBarAct =
+            new Runnable() {
+                @Override
+                public void run() {
+                    updateBottomTimeBar();
+                }
+            };
+
+    private void updateBottomTimeBar() {
+        if (bottomProgress == null)
+            return;
+        removeCallbacks(updateBottomTimeBarAct);
+        if (player != null) {
+            int playbackState = player == null ? Player.STATE_IDLE : player.getPlaybackState();
+            if (playbackState != Player.STATE_IDLE && playbackState != Player.STATE_ENDED) {
+                bottomProgress.setProgress((int) (player.getCurrentPosition() * 100 / player.getDuration()));
+            }
+        }
+        postDelayed(updateBottomTimeBarAct, 1000);
     }
 
     @Override
@@ -932,17 +963,66 @@ public class ExoPlayerView extends FrameLayout {
         return subtitleView;
     }
 
+
+    private boolean moveFlag = false;
+    private int moveDirection;//1为X轴，2为Y轴
+    private boolean touchDownLeft;
+    private float mDownX = 0;
+    private float mDownY = 0;
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (!useController || player == null || ev.getActionMasked() != MotionEvent.ACTION_DOWN) {
-            return false;
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mDownX = ev.getX();
+                mDownY = ev.getY();
+                float measuredWidth = MeasureSpec.getSize(getMeasuredWidth());
+                touchDownLeft = mDownX < measuredWidth / 2;
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                float destX = (ev.getX() - mDownX) / 2;
+                float destY = (ev.getY() - mDownY) / 2;
+                if (!moveFlag){
+                    moveDirection=Math.abs(destX)>Math.abs(destY)?1:2;
+                }
+                moveFlag = true;
+                if (moveDirection==2){
+                    if (touchDownLeft) {
+                        exoGestureLayout.settingBrightness(-destY);
+                    }else {
+                        exoGestureLayout.settingVolume((int) -destY);
+                    }
+                }else if (moveDirection==1){
+                    exoGestureLayout.setVideoProgress(destX);
+                }
+                return true;
+            case MotionEvent.ACTION_UP:
+                if (!moveFlag) {
+                    if (!controller.isVisible()) {
+                        maybeShowController(true);
+                    } else if (controllerHideOnTouch) {
+                        controller.hide();
+                    }
+                } else {
+                    moveFlag = false;
+                    if (moveDirection==1){
+                        exoGestureLayout.releaseVideoProgress();
+                    }else if (moveDirection==2){
+                        exoGestureLayout.releaseBrightness();
+                        exoGestureLayout.releaseVolume();
+                    }
+                }
+
+                return true;
+            default:
+                return super.onTouchEvent(ev);
         }
-        if (!controller.isVisible()) {
-            maybeShowController(true);
-        } else if (controllerHideOnTouch) {
-            controller.hide();
-        }
-        return true;
+
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
@@ -1255,18 +1335,20 @@ public class ExoPlayerView extends FrameLayout {
         controller.setAdditionControlViewListener(additionControlViewListener);
     }
 
-    public void resizeScreen(boolean isFullscreen) {
+    //横竖屏设置
+    private final int screenWidth = getResources().getDisplayMetrics().widthPixels;
+    private final int screenHeight = screenWidth * 9 / 16;
+    private final LinearLayout.LayoutParams portraitLayoutParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight);
+    private final LinearLayout.LayoutParams landscapeLayoutParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
-        LinearLayout.LayoutParams layoutParams;
-        this.requestFocus();
+    public void resizeScreen(boolean isFullscreen) {
         if (isFullscreen) {
-            layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            this.setLayoutParams(landscapeLayoutParam);
+            bottomProgress.setVisibility(INVISIBLE);
         } else {
-            int screenWidth = getResources().getDisplayMetrics().widthPixels;
-            int screenHeight = screenWidth * 9 / 16;
-            layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight);
+            this.setLayoutParams(portraitLayoutParam);
+            bottomProgress.setVisibility(VISIBLE);
         }
-        this.setLayoutParams(layoutParams);
         controller.changeFullScreenImage(isFullscreen);
     }
 
