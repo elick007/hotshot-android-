@@ -1,4 +1,4 @@
-package hotshot.elick.com.hotshot.UI.fragments.hot;
+package hotshot.elick.com.hotshot.UI.fragments.hot.LiVideo;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,17 +9,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import hotshot.elick.com.hotshot.R;
-import hotshot.elick.com.hotshot.UI.activities.PlayerActivity;
+import hotshot.elick.com.hotshot.UI.activities.player.PlayerActivity;
 import hotshot.elick.com.hotshot.UI.fragments.BaseFragment;
 import hotshot.elick.com.hotshot.adapter.LiVideoMultiRVAdapter;
-import hotshot.elick.com.hotshot.entity.OpenEyeEntity;
-import hotshot.elick.com.hotshot.entity.ResponseBase;
-import hotshot.elick.com.hotshot.entity.ResponseError;
 import hotshot.elick.com.hotshot.entity.VideoBean;
-import hotshot.elick.com.hotshot.presenter.LiVideoPresenter;
 import hotshot.elick.com.hotshot.widget.StatusLayout;
 
-public class LiVideoFragment extends BaseFragment<LiVideoPresenter> {
+public class LiVideoFragment extends BaseFragment<LiVideoPresenter> implements LiVideoFragmentContract.View {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_layout)
@@ -40,42 +36,38 @@ public class LiVideoFragment extends BaseFragment<LiVideoPresenter> {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter.setOnItemClickListener((adapter, view, position) -> {
-            PlayerActivity.startUp(getContext(),"lsp", (VideoBean) adapter.getData().get(position));
-            getActivity().overridePendingTransition(R.anim.activity_start_from_bottom_to_top_anim,0);
+            PlayerActivity.startUp(getContext(), "lsp", (VideoBean) adapter.getData().get(position));
+            getActivity().overridePendingTransition(R.anim.activity_start_from_bottom_to_top_anim, 0);
         });
     }
 
     @Override
     protected void startLoadData() {
-        basePresenter.getLspHotVideo();
+        basePresenter.getLSPHot();
+        statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_LOADING);
     }
 
 
-    private void refreshRecyclerView(List<VideoBean> videoBeanList){
+    private void refreshRecyclerView(List<VideoBean> videoBeanList) {
         videoBeanList.get(0).setItemType(VideoBean.TYPE_HEAD);
         list.clear();
         list.addAll(videoBeanList);
         adapter.notifyDataSetChanged();
     }
+
     @Override
     protected int setLayoutResId() {
         return R.layout.li_video_fragment_layout;
     }
 
     @Override
-    public void onPresenterSuccess(ResponseBase response) {
-        OpenEyeEntity openEyeEntity= (OpenEyeEntity) response;
-        refreshRecyclerView(openEyeEntity.getData().getVideoList());
-        statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_GONE);
-    }
-
-    @Override
-    public void onPresenterFail(ResponseError error) {
-        statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_ERROE);
-    }
-
-    @Override
     public void onRetry() {
+        startLoadData();
+    }
 
+    @Override
+    public void updateLSPHot(List<VideoBean> list) {
+        swipeLayout.setRefreshing(false);
+        refreshRecyclerView(list);
     }
 }

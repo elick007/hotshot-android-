@@ -1,6 +1,7 @@
 package hotshot.elick.com.hotshot.widget;
 
 import android.content.Context;
+import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -9,6 +10,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import hotshot.elick.com.hotshot.R;
 
 public class StatusLayout extends LinearLayout {
@@ -16,6 +20,12 @@ public class StatusLayout extends LinearLayout {
     public static final int STATUS_LAYOUT_ERROE = 3001;
     public static final int STATUS_LAYOUT_EMPTY = 3002;
     public static final int STATUS_LAYOUT_GONE = 3004;
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({STATUS_LAYOUT_LOADING , STATUS_LAYOUT_ERROE,STATUS_LAYOUT_EMPTY,STATUS_LAYOUT_GONE})
+    @interface StatusCode {
+
+    }
+    @StatusCode
     private int currentStatus = STATUS_LAYOUT_LOADING;
     private View rootView;
     private TextView titleTV;
@@ -48,7 +58,7 @@ public class StatusLayout extends LinearLayout {
         });
     }
 
-    public void setLayoutStatus(int status) {
+    public void setLayoutStatus(@StatusCode int status) {
         if (status == STATUS_LAYOUT_GONE) {
             this.setVisibility(GONE);
             return;

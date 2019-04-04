@@ -5,7 +5,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import java.io.Serializable;
 
 public class VideoBean implements MultiItemEntity ,Serializable{
-    private static final long serialVersionUID=5456438745457415L;
+    private static final long serialVersionUID=1L;
     public static final int TYPE_HEAD=0x00000001;
     public static final int TYPE_NORMOL=0x00000002;
     private int itemType=TYPE_NORMOL;

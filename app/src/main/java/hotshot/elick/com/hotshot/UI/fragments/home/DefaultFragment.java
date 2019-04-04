@@ -1,4 +1,4 @@
-package hotshot.elick.com.hotshot.UI.fragments;
+package hotshot.elick.com.hotshot.UI.fragments.home;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -20,22 +20,22 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import hotshot.elick.com.hotshot.R;
-import hotshot.elick.com.hotshot.UI.activities.PlayerActivity;
+import hotshot.elick.com.hotshot.UI.activities.player.PlayerActivity;
+import hotshot.elick.com.hotshot.UI.fragments.BaseFragment;
 import hotshot.elick.com.hotshot.adapter.DYRVAdapter;
 import hotshot.elick.com.hotshot.adapter.OEMultiRVAdapter;
-import hotshot.elick.com.hotshot.entity.ResponseBase;
-import hotshot.elick.com.hotshot.entity.ResponseError;
 import hotshot.elick.com.hotshot.entity.VideoBean;
-import hotshot.elick.com.hotshot.presenter.DefaultFragmentPresenter;
 import hotshot.elick.com.hotshot.utils.DensityUtil;
 import hotshot.elick.com.hotshot.utils.GlideUtils;
 import hotshot.elick.com.hotshot.widget.StatusLayout;
 
-public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> {
+public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> implements DefaultFragmentContract.View {
     @BindView(R.id.default_video_fragment_date)
     TextView defaultVideoFragmentDate;
     @BindView(R.id.default_video_fragment_horizon_rv)
@@ -103,8 +103,8 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> {
         oeAdapter = new BaseQuickAdapter<VideoBean, BaseViewHolder>(R.layout.default_fragment_oe_rv_item, oeVideoList) {
             @Override
             protected void convert(BaseViewHolder helper, VideoBean item) {
-                GlideUtils.loadRoundImage(context,item.getCover(),helper.getView(R.id.default_fragment_oe_item_image));
-                helper.setText(R.id.default_fragment_oe_item_title,item.getTitle());
+                GlideUtils.loadRoundImage(context, item.getCover(), helper.getView(R.id.default_fragment_oe_item_image));
+                helper.setText(R.id.default_fragment_oe_item_title, item.getTitle());
             }
         };
 
@@ -112,26 +112,26 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> {
         defaultVideoFragmentHorizonRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         //listener
         oeAdapter.setOnItemClickListener((adapter, view, position) -> {
-            PlayerActivity.startUp(context,"oe", (VideoBean) adapter.getData().get(position));
+            PlayerActivity.startUp(context, "oe", (VideoBean) adapter.getData().get(position));
             getActivity().overridePendingTransition(R.anim.activity_start_from_bottom_to_top_anim, 0);
         });
     }
 
     private void initDY() {
         dyAdapter = new DYRVAdapter(R.layout.videos_list_item_dy, dyVideoList);
-        TextView textView=new TextView(context);
+        TextView textView = new TextView(context);
         textView.setText("-没有更多内容-");
         textView.setGravity(Gravity.CENTER);
-        textView.setMinHeight(DensityUtil.dip2px(context,30));
-        dyAdapter.setFooterView(textView,2);
+        textView.setMinHeight(DensityUtil.dip2px(context, 30));
+        dyAdapter.setFooterView(textView, 2);
         defaultVideoFragmentCardRv.setAdapter(dyAdapter);
-        GridLayoutManager gridLayoutManager=new GridLayoutManager(context,2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int i) {
-                if (dyAdapter.getItemViewType(i)==DYRVAdapter.FOOTER_VIEW){
+                if (dyAdapter.getItemViewType(i) == DYRVAdapter.FOOTER_VIEW) {
                     return 2;
-                }else {
+                } else {
                     return 1;
                 }
             }
@@ -139,7 +139,7 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> {
         defaultVideoFragmentCardRv.setLayoutManager(gridLayoutManager);
         //listener
         dyAdapter.setOnItemClickListener((adapter, view, position) -> {
-            PlayerActivity.startUp(context,"dy", (VideoBean) adapter.getData().get(position));
+            PlayerActivity.startUp(context, "dy", (VideoBean) adapter.getData().get(position));
             getActivity().overridePendingTransition(R.anim.activity_start_from_bottom_to_top_anim, 0);
         });
     }
@@ -148,8 +148,8 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> {
         lspAdapter = new BaseQuickAdapter<VideoBean, BaseViewHolder>(R.layout.video_list_item_lsp_header, lspVideoList) {
             @Override
             protected void convert(BaseViewHolder helper, VideoBean item) {
-                GlideUtils.loadRoundImage(context,item.getCover(),helper.getView(R.id.lsp_item_image_header));
-                helper.setText(R.id.lsp_item_title_header,item.getTitle());
+                GlideUtils.loadRoundImage(context, item.getCover(), helper.getView(R.id.lsp_item_image_header));
+                helper.setText(R.id.lsp_item_title_header, item.getTitle());
             }
         };
         defaultVideoFragmentVerticalRv.setAdapter(lspAdapter);
@@ -159,7 +159,7 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> {
         defaultVideoFragmentVerticalRv.addItemDecoration(dividerItemDecoration);
         //listener
         lspAdapter.setOnItemClickListener((adapter, view, position) -> {
-            PlayerActivity.startUp(context,"lsp", (VideoBean) adapter.getData().get(position));
+            PlayerActivity.startUp(context, "lsp", (VideoBean) adapter.getData().get(position));
             getActivity().overridePendingTransition(R.anim.activity_start_from_bottom_to_top_anim, 0);
         });
     }
@@ -170,6 +170,32 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> {
         if (!convenientBanner.isTurning()) {
             convenientBanner.startTurning(3000);
         }
+    }
+
+    @Override
+    public void updateOE(List<VideoBean> list) {
+        oeVideoList.clear();
+        oeVideoList.addAll(list);
+        oeAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateDY(List<VideoBean> list) {
+        dyVideoList.clear();
+        dyVideoList.addAll(list);
+        dyAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateLSP(List<VideoBean> list) {
+        lspVideoList.clear();
+        lspVideoList.addAll(list);
+        lspAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateBanner(List<VideoBean> list) {
+
     }
 
     static class NetworkImageLoader extends Holder<VideoBean> {
@@ -197,9 +223,9 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> {
 
     @Override
     protected void startLoadData() {
-        basePresenter.getVideos("oe", "random");
-        basePresenter.getVideos("dy", "random");
-        basePresenter.getVideos("lsp", "random");
+        basePresenter.getOERandom();
+        basePresenter.getDYRandom();
+        basePresenter.getLSPRandom();
     }
 
     @Override
@@ -207,36 +233,6 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> {
         return R.layout.default_video_fragment_layout;
     }
 
-    public void updateRV(String channel, List<VideoBean> list) {
-        switch (channel) {
-            case "oe":
-                oeVideoList.clear();
-                oeVideoList.addAll(list);
-                oeAdapter.notifyDataSetChanged();
-                break;
-            case "dy":
-                dyVideoList.clear();
-                dyVideoList.addAll(list);
-                dyAdapter.notifyDataSetChanged();
-                break;
-            case "lsp":
-                lspVideoList.clear();
-                lspVideoList.addAll(list);
-                lspAdapter.notifyDataSetChanged();
-                break;
-        }
-        statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_GONE);
-    }
-
-    @Override
-    public void onPresenterSuccess(ResponseBase response) {
-
-    }
-
-    @Override
-    public void onPresenterFail(ResponseError error) {
-        statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_ERROE);
-    }
 
     @Override
     public void onRetry() {

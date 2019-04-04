@@ -10,13 +10,11 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import hotshot.elick.com.hotshot.R;
 import hotshot.elick.com.hotshot.UI.fragments.BaseFragment;
-import hotshot.elick.com.hotshot.UI.fragments.HotFragment;
-import hotshot.elick.com.hotshot.UI.fragments.DefaultFragment;
-import hotshot.elick.com.hotshot.UI.fragments.MineFragment;
+import hotshot.elick.com.hotshot.UI.fragments.hot.HotFragment;
+import hotshot.elick.com.hotshot.UI.fragments.home.DefaultFragment;
+import hotshot.elick.com.hotshot.UI.fragments.Mine.MineFragment;
 import hotshot.elick.com.hotshot.adapter.ViewPagerAdapter;
 import hotshot.elick.com.hotshot.baseMVP.BasePresenter;
-import hotshot.elick.com.hotshot.entity.ResponseBase;
-import hotshot.elick.com.hotshot.entity.ResponseError;
 import hotshot.elick.com.hotshot.widget.CustomViewPager;
 
 public class HomeActivity extends BaseActivity {
@@ -74,12 +72,12 @@ public class HomeActivity extends BaseActivity {
     }
 
     @Override
-    public void onPresenterSuccess(ResponseBase response) {
+    public void onPresenterSuccess() {
 
     }
 
     @Override
-    public void onPresenterFail(ResponseError error) {
+    public void onPresenterFail(String msg) {
 
     }
 

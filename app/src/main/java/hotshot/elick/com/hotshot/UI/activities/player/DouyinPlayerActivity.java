@@ -1,4 +1,4 @@
-package hotshot.elick.com.hotshot.UI.activities;
+package hotshot.elick.com.hotshot.UI.activities.player;
 
 import android.content.res.Configuration;
 import android.net.Uri;

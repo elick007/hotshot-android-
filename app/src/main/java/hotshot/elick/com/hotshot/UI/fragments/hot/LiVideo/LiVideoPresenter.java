@@ -1,19 +1,21 @@
-package hotshot.elick.com.hotshot.presenter;
+package hotshot.elick.com.hotshot.UI.fragments.hot.LiVideo;
 
 import hotshot.elick.com.hotshot.api.RetrofitService;
 import hotshot.elick.com.hotshot.baseMVP.BasePresenter;
 import hotshot.elick.com.hotshot.baseMVP.BaseView;
-import hotshot.elick.com.hotshot.entity.OpenEyeEntity;
+import hotshot.elick.com.hotshot.entity.HotVideosEntity;
+import hotshot.elick.com.hotshot.entity.ResponseBase;
+import hotshot.elick.com.hotshot.entity.VideoEntity;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class DouYinPrensenter implements BasePresenter {
-    private BaseView baseView;
+public class LiVideoPresenter implements LiVideoFragmentContract.Presenter{
+    private LiVideoFragment baseView;
 
-    public DouYinPrensenter(BaseView baseView) {
+    public LiVideoPresenter(LiVideoFragment baseView) {
         this.baseView = baseView;
     }
 
@@ -27,19 +29,20 @@ public class DouYinPrensenter implements BasePresenter {
 
     }
 
-    public void getDYHotVideo(){
-        Observable<OpenEyeEntity> observable= RetrofitService.buildApi().getVideos("dy","hot");
+    @Override
+    public void getLSPHot() {
+        Observable<ResponseBase<HotVideosEntity>> observable=RetrofitService.buildApi().getLSPHotVideos();
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<OpenEyeEntity>() {
+                .subscribe(new Observer<ResponseBase<HotVideosEntity>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(OpenEyeEntity openEyeEntity) {
-                        baseView.onPresenterSuccess(openEyeEntity);
+                    public void onNext(ResponseBase<HotVideosEntity> hotVideosEntityResponseBase) {
+                        baseView.updateLSPHot(hotVideosEntityResponseBase.getData().getVideoList());
                     }
 
                     @Override
@@ -49,7 +52,7 @@ public class DouYinPrensenter implements BasePresenter {
 
                     @Override
                     public void onComplete() {
-
+                        baseView.onPresenterSuccess();
                     }
                 });
     }

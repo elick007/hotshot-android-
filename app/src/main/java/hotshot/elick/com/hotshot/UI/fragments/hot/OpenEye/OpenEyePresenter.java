@@ -1,19 +1,20 @@
-package hotshot.elick.com.hotshot.presenter;
+package hotshot.elick.com.hotshot.UI.fragments.hot.OpenEye;
 
 import hotshot.elick.com.hotshot.api.RetrofitService;
-import hotshot.elick.com.hotshot.baseMVP.BasePresenter;
 import hotshot.elick.com.hotshot.baseMVP.BaseView;
-import hotshot.elick.com.hotshot.entity.OpenEyeEntity;
+import hotshot.elick.com.hotshot.entity.HotVideosEntity;
+import hotshot.elick.com.hotshot.entity.ResponseBase;
 import hotshot.elick.com.hotshot.utils.MyLog;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-public class OpenEyePresenter implements BasePresenter {
-    private BaseView baseView;
 
-    public OpenEyePresenter(BaseView baseView) {
+public class OpenEyePresenter implements OpenEyeFragmentContract.Presenter {
+    private OpenEyesFragment baseView;
+
+    public OpenEyePresenter(OpenEyesFragment baseView) {
         this.baseView = baseView;
     }
 
@@ -26,32 +27,34 @@ public class OpenEyePresenter implements BasePresenter {
     public void dettachView(BaseView baseView) {
 
     }
-    public void getVideos(String channel,String type){
+
+    @Override
+    public void getHotVideo() {
         MyLog.e("get videos");
-        Observable<OpenEyeEntity> observable=RetrofitService.buildApi().getVideos(channel,type);
+        Observable<ResponseBase<HotVideosEntity>> observable = RetrofitService.buildApi().getOEHotVideos();
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<OpenEyeEntity>() {
+                .subscribe(new Observer<ResponseBase<HotVideosEntity>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        MyLog.e("onsubscribe");
+
                     }
 
                     @Override
-                    public void onNext(OpenEyeEntity s) {
-                        MyLog.e("onNext");
-                        baseView.onPresenterSuccess(s);
+                    public void onNext(ResponseBase<HotVideosEntity> hotVideosEntityResponseBase) {
+                        baseView.updateHotVideo(hotVideosEntityResponseBase.getData().getVideoList());
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        MyLog.e("onError");
+
                     }
 
                     @Override
                     public void onComplete() {
-                        MyLog.e("onComplete");
+                        baseView.onPresenterSuccess();
                     }
                 });
     }
+
 }

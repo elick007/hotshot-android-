@@ -6,25 +6,24 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import hotshot.elick.com.hotshot.R;
 import hotshot.elick.com.hotshot.baseMVP.BasePresenter;
 import hotshot.elick.com.hotshot.baseMVP.BaseView;
-import hotshot.elick.com.hotshot.entity.ResponseBase;
-import hotshot.elick.com.hotshot.entity.ResponseError;
 import hotshot.elick.com.hotshot.utils.MyLog;
 import hotshot.elick.com.hotshot.widget.StatusLayout;
 
-public abstract class BaseFragment<T extends BasePresenter> extends Fragment implements BaseView ,StatusLayout.RetryListener{
+public abstract class BaseFragment<T extends BasePresenter> extends Fragment implements BaseView, StatusLayout.RetryListener {
     protected T basePresenter;
     protected Context context;
-    protected String TAG = this.getClass().getName();
+    protected String TAG = this.getClass().getSimpleName();
     private Unbinder unbinder;
 
     private View rootView;
@@ -45,8 +44,8 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
         if (rootView == null) {
             rootView = inflater.inflate(setLayoutResId(), null);
             unbinder = ButterKnife.bind(this, rootView);
-            statusLayout=rootView.findViewById(R.id.status_layout);
-            if (statusLayout!=null){
+            statusLayout = rootView.findViewById(R.id.status_layout);
+            if (statusLayout != null) {
                 statusLayout.setRetryListener(this);
             }
             basePresenter = setPresenter();
@@ -81,15 +80,26 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
         }
     }
 
-
     @Override
     public void onDestroy() {
         MyLog.d(TAG + " onDestroy");
-        if (basePresenter!=null){
-            basePresenter=null;
+        if (basePresenter != null) {
+            basePresenter = null;
         }
         unbinder.unbind();
         super.onDestroy();
+    }
+
+    @Override
+    public void onPresenterSuccess() {
+        statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_GONE);
+    }
+
+    @Override
+    public void onPresenterFail(String msg) {
+        if (!TextUtils.isEmpty(msg))
+        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
+        statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_ERROE);
     }
 
     protected abstract int setLayoutResId();
@@ -99,4 +109,5 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     protected abstract void initView();
 
     protected abstract void startLoadData();
+
 }

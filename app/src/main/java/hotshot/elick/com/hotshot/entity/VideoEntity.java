@@ -2,9 +2,9 @@ package hotshot.elick.com.hotshot.entity;
 
 import java.util.List;
 
-public class OpenEyeEntity extends ResponseBase<OpenEyeEntity.Data> {
+public class VideoEntity extends ResponseBase<VideoEntity.Data> {
 
-    public OpenEyeEntity() {
+    public VideoEntity() {
     }
 
     public static class Data {

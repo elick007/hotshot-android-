@@ -1,4 +1,4 @@
-package hotshot.elick.com.hotshot.UI.fragments.hot;
+package hotshot.elick.com.hotshot.UI.fragments.hot.OpenEye;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,18 +9,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import hotshot.elick.com.hotshot.R;
-import hotshot.elick.com.hotshot.UI.activities.PlayerActivity;
+import hotshot.elick.com.hotshot.UI.activities.player.PlayerActivity;
 import hotshot.elick.com.hotshot.UI.fragments.BaseFragment;
 import hotshot.elick.com.hotshot.adapter.OEMultiRVAdapter;
-import hotshot.elick.com.hotshot.entity.OpenEyeEntity;
-import hotshot.elick.com.hotshot.entity.ResponseBase;
-import hotshot.elick.com.hotshot.entity.ResponseError;
 import hotshot.elick.com.hotshot.entity.VideoBean;
-import hotshot.elick.com.hotshot.presenter.OpenEyePresenter;
-import hotshot.elick.com.hotshot.utils.MyLog;
 import hotshot.elick.com.hotshot.widget.StatusLayout;
 
-public class OpenEyesFragment extends BaseFragment<OpenEyePresenter> {
+public class OpenEyesFragment extends BaseFragment<OpenEyePresenter> implements OpenEyeFragmentContract.View{
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_layout)
@@ -56,15 +51,14 @@ public class OpenEyesFragment extends BaseFragment<OpenEyePresenter> {
 
     @Override
     protected void startLoadData() {
-        swipeLayout.setRefreshing(true);
-        basePresenter.getVideos("oe", "hot");
+        statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_LOADING);
+        basePresenter.getHotVideo();
     }
 
-    public void refreshRecyclerView(List<VideoBean> videoBeanList) {
+    private void refreshRecyclerView(List<VideoBean> videoBeanList) {
         videoBeanList.get(0).setItemType(VideoBean.TYPE_HEAD);
         list.addAll(videoBeanList);
         adapter.notifyDataSetChanged();
-
     }
 
     @Override
@@ -73,23 +67,13 @@ public class OpenEyesFragment extends BaseFragment<OpenEyePresenter> {
     }
 
     @Override
-    public void onPresenterSuccess(ResponseBase response) {
-        MyLog.d("get oe hot video success");
-        swipeLayout.setRefreshing(false);
-        OpenEyeEntity openEyeEntity = (OpenEyeEntity) response;
-        refreshRecyclerView(openEyeEntity.getData().getVideoList());
-        statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_GONE);
-    }
-
-    @Override
-    public void onPresenterFail(ResponseError error) {
-        swipeLayout.setRefreshing(false);
-        statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_ERROE);
-    }
-
-    @Override
     public void onRetry() {
-        //Toast.makeText(context, "retring...", Toast.LENGTH_SHORT).show();
         startLoadData();
+    }
+
+    @Override
+    public void updateHotVideo(List<VideoBean> list) {
+        swipeLayout.setRefreshing(false);
+        refreshRecyclerView(list);
     }
 }

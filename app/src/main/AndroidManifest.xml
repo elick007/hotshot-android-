@@ -27,10 +27,10 @@
         </activity>
         <activity android:name=".UI.LoginActivity" />
         <activity
-            android:name=".UI.activities.PlayerActivity"
+            android:name=".UI.activities.player.PlayerActivity"
             android:configChanges="orientation|screenSize|screenLayout"
             android:hardwareAccelerated="true" />
-        <activity android:name=".UI.activities.DouyinPlayerActivity"
+        <activity android:name=".UI.activities.player.DouyinPlayerActivity"
             android:configChanges="keyboardHidden|navigation|screenLayout"
             android:screenOrientation="portrait"></activity>
     </application>

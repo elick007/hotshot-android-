@@ -1,13 +1,14 @@
-package hotshot.elick.com.hotshot.UI.fragments;
+package hotshot.elick.com.hotshot.UI.fragments.hot;
 
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import butterknife.BindView;
 import hotshot.elick.com.hotshot.R;
-import hotshot.elick.com.hotshot.UI.fragments.hot.DouYinFragment;
-import hotshot.elick.com.hotshot.UI.fragments.hot.LiVideoFragment;
-import hotshot.elick.com.hotshot.UI.fragments.hot.OpenEyesFragment;
+import hotshot.elick.com.hotshot.UI.fragments.BaseFragment;
+import hotshot.elick.com.hotshot.UI.fragments.hot.DouYin.DouYinFragment;
+import hotshot.elick.com.hotshot.UI.fragments.hot.LiVideo.LiVideoFragment;
+import hotshot.elick.com.hotshot.UI.fragments.hot.OpenEye.OpenEyesFragment;
 import hotshot.elick.com.hotshot.adapter.ViewPagerAdapter;
 import hotshot.elick.com.hotshot.baseMVP.BasePresenter;
 import hotshot.elick.com.hotshot.entity.ResponseBase;
@@ -48,15 +49,6 @@ public class HotFragment extends BaseFragment {
         return R.layout.hot_video_fragment_layout;
     }
 
-    @Override
-    public void onPresenterSuccess(ResponseBase response) {
-
-    }
-
-    @Override
-    public void onPresenterFail(ResponseError error) {
-
-    }
 
     @Override
     public void onRetry() {
