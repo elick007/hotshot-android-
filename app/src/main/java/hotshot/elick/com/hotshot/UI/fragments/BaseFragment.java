@@ -30,6 +30,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     private boolean isRootViewCreate;
     private boolean isVisible;
     protected StatusLayout statusLayout;
+    protected SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,21 +45,33 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
         if (rootView == null) {
             rootView = inflater.inflate(setLayoutResId(), null);
             unbinder = ButterKnife.bind(this, rootView);
-            statusLayout = rootView.findViewById(R.id.status_layout);
-            if (statusLayout != null) {
-                statusLayout.setRetryListener(this);
-            }
-            basePresenter = setPresenter();
-            initView();
         }
         ViewGroup parent = (ViewGroup) rootView.getParent();
         if (parent != null) {
             parent.removeView(rootView);
         }
+        basePresenter = setPresenter();
+        initView();
         MyLog.d(TAG + " onCreateView");
         isRootViewCreate = true;
         checkLoadable();
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        statusLayout = rootView.findViewById(R.id.status_layout);
+        if (statusLayout != null) {
+            statusLayout.setRetryListener(this);
+        }
+        swipeRefreshLayout=rootView.findViewById(R.id.swipe_layout);
+        if (swipeRefreshLayout!=null){
+            swipeRefreshLayout.setOnRefreshListener(() -> {
+                statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_LOADING);
+                startLoadData();
+            });
+        }
     }
 
     @Override
@@ -92,16 +105,19 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
 
     @Override
     public void onPresenterSuccess() {
+        if (swipeRefreshLayout!=null)
+            swipeRefreshLayout.setRefreshing(false);
         statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_GONE);
     }
 
     @Override
     public void onPresenterFail(String msg) {
+        if (swipeRefreshLayout!=null)
+            swipeRefreshLayout.setRefreshing(false);
         if (!TextUtils.isEmpty(msg))
         Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
         statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_ERROE);
     }
-
     protected abstract int setLayoutResId();
 
     protected abstract T setPresenter();

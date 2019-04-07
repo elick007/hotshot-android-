@@ -2,7 +2,6 @@ package hotshot.elick.com.hotshot.UI.fragments.home;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,10 +43,6 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> impl
     RecyclerView defaultVideoFragmentCardRv;
     @BindView(R.id.default_video_fragment_vertical_rv)
     RecyclerView defaultVideoFragmentVerticalRv;
-    @BindView(R.id.swipe_layout)
-    SwipeRefreshLayout swipeLayout;
-    @BindView(R.id.status_layout)
-    StatusLayout statusLayout;
     @BindView(R.id.convenient_banner)
     ConvenientBanner convenientBanner;
     private OEMultiRVAdapter oeMultiRVAdapter;

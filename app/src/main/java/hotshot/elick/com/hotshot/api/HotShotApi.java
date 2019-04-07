@@ -16,13 +16,13 @@ public interface HotShotApi {
 
     //热门视频
     @GET("api/videos/oe/hot/")
-    Observable<ResponseBase<HotVideosEntity>> getOEHotVideos();
+    Observable<ResponseBase<List<VideoBean>>> getOEHotVideos();
 
     @GET("api/videos/dy/hot/")
-    Observable<ResponseBase<HotVideosEntity>> getDYHotVideos();
+    Observable<ResponseBase<List<VideoBean>>> getDYHotVideos();
 
     @GET("api/videos/lsp/hot/")
-    Observable<ResponseBase<HotVideosEntity>> getLSPHotVideos();
+    Observable<ResponseBase<List<VideoBean>>> getLSPHotVideos();
 
     //随机视频 数量10
     @GET("api/videos/oe/random/")

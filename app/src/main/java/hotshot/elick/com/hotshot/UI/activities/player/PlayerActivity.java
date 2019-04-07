@@ -60,47 +60,13 @@ public class PlayerActivity extends PlayerActivityBase<PlayerPresenter>{
         Intent intent = getIntent();
         channel = intent.getStringExtra("channel");
         video = (VideoBean) intent.getSerializableExtra("video_info");
-        resizePlayerView(false);
+        playerView.resizeScreen(false);
         simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(this, new DefaultTrackSelector());
         simpleExoPlayer.setPlayWhenReady(true);
         playerView.setPlayer(simpleExoPlayer);
         playerView.setControllerVisibile();
         playerView.setControllerShowTimeoutMs(2500);
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
-        playerView.setAdditionControlViewListener(new ExoPlayerControlView.AdditionControlViewListener() {
-            @Override
-            public void onClickCloseButton() {
-                if (PlayerActivity.this.getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE) {
-                    PlayerActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-                    isLockedLandscape = false;
-                    isLockedPortrait = true;
-                } else {
-                    PlayerActivity.this.finish();
-                }
-            }
-
-            @Override
-            public void onClickMoreButton() {
-
-            }
-
-            @Override
-            public boolean onClickFullscreenButton() {
-                if (PlayerActivity.this.getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT) {
-                    PlayerActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                    resizePlayerView(true);
-                    isLockedLandscape = true;
-                    isLockedPortrait = false;
-                    return true;
-                } else {
-                    PlayerActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                    resizePlayerView(false);
-                    isLockedLandscape = false;
-                    isLockedPortrait = true;
-                    return false;
-                }
-            }
-        });
         updateVideoSource();
         PullDownCloseHeader pullDownCloseHeader=new PullDownCloseHeader(this);
         ptrFrameLayout.addPtrUIHandler(pullDownCloseHeader);
@@ -152,12 +118,6 @@ public class PlayerActivity extends PlayerActivityBase<PlayerPresenter>{
     }
 
 
-
-    private void resizePlayerView(boolean isFullScreen) {
-        playerView.resizeScreen(isFullScreen);
-    }
-
-
     @Override
     public void onPresenterSuccess() {
 
@@ -177,6 +137,11 @@ public class PlayerActivity extends PlayerActivityBase<PlayerPresenter>{
     @Override
     protected boolean enableOrientation() {
         return true;
+    }
+
+    @Override
+    protected ExoPlayerView setExoPlayerView() {
+        return playerView;
     }
 
     @Override

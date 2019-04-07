@@ -33,7 +33,7 @@ public class RetrofitService {
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl("http://172.16.100.196:8000/")
+                .baseUrl("http://172.16.1.133:8000/")
                 .build();
     }
 

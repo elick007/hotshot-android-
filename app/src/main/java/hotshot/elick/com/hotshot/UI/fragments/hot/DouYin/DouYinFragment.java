@@ -18,8 +18,6 @@ import hotshot.elick.com.hotshot.entity.VideoBean;
 import hotshot.elick.com.hotshot.widget.StatusLayout;
 
 public class DouYinFragment extends BaseFragment<DouYinPrensenter> implements DouYinFragmentContract.View {
-    @BindView(R.id.swipe_layout)
-    SwipeRefreshLayout swipeLayout;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -34,7 +32,6 @@ public class DouYinFragment extends BaseFragment<DouYinPrensenter> implements Do
     @Override
     protected void initView() {
         mList = new ArrayList<>();
-        swipeLayout.setOnRefreshListener(() -> swipeLayout.setRefreshing(false));
         adapter = new DYRVAdapter(R.layout.videos_list_item_dy, mList);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
         recyclerView.setAdapter(adapter);
@@ -68,6 +65,7 @@ public class DouYinFragment extends BaseFragment<DouYinPrensenter> implements Do
 
     @Override
     public void updateDYHot(List<VideoBean> list) {
+        statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_GONE);
         mList.clear();
         mList.addAll(list);
         adapter.notifyDataSetChanged();

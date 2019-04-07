@@ -6,10 +6,11 @@ import hotshot.elick.com.hotshot.baseMVP.BasePresenter;
 import hotshot.elick.com.hotshot.baseMVP.BaseView;
 import hotshot.elick.com.hotshot.entity.VideoBean;
 
-public class PlayerActivityContract {
+public interface PlayerActivityContract {
     interface Presenter extends BasePresenter{
-        void retrieveFav(String channel,String uid,String videoId);
-        void deleteFav(String channel,String uid,String videoId);
+        void retrieveFav(String channel,String videoId);
+        void addFav(String channal,String videoId);
+        void deleteFav(String channel,String videoId);
         void getRandomVideos(String channel);
     }
 

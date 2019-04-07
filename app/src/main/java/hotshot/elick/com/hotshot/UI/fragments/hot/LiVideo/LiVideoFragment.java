@@ -18,8 +18,6 @@ import hotshot.elick.com.hotshot.widget.StatusLayout;
 public class LiVideoFragment extends BaseFragment<LiVideoPresenter> implements LiVideoFragmentContract.View {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-    @BindView(R.id.swipe_layout)
-    SwipeRefreshLayout swipeLayout;
 
     LiVideoMultiRVAdapter adapter;
     List<VideoBean> list;
@@ -44,7 +42,6 @@ public class LiVideoFragment extends BaseFragment<LiVideoPresenter> implements L
     @Override
     protected void startLoadData() {
         basePresenter.getLSPHot();
-        statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_LOADING);
     }
 
 
@@ -67,7 +64,6 @@ public class LiVideoFragment extends BaseFragment<LiVideoPresenter> implements L
 
     @Override
     public void updateLSPHot(List<VideoBean> list) {
-        swipeLayout.setRefreshing(false);
         refreshRecyclerView(list);
     }
 }

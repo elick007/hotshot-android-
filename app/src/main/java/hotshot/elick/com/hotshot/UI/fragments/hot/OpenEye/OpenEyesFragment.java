@@ -18,8 +18,6 @@ import hotshot.elick.com.hotshot.widget.StatusLayout;
 public class OpenEyesFragment extends BaseFragment<OpenEyePresenter> implements OpenEyeFragmentContract.View{
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-    @BindView(R.id.swipe_layout)
-    SwipeRefreshLayout swipeLayout;
     private OEMultiRVAdapter adapter;
     private List<VideoBean> list;
 
@@ -38,10 +36,6 @@ public class OpenEyesFragment extends BaseFragment<OpenEyePresenter> implements 
             PlayerActivity.startUp(getContext(), "oe", (VideoBean) adapter.getData().get(position));
             getActivity().overridePendingTransition(R.anim.activity_start_from_bottom_to_top_anim, 0);
         });
-        swipeLayout.setOnRefreshListener(() -> {
-            statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_LOADING);
-            startLoadData();
-        });
 //        adapter.setEnableLoadMore(true);
 //        adapter.setOnLoadMoreListener(() -> {
 //            Toast.makeText(context,"load more",Toast.LENGTH_SHORT).show();
@@ -51,11 +45,11 @@ public class OpenEyesFragment extends BaseFragment<OpenEyePresenter> implements 
 
     @Override
     protected void startLoadData() {
-        statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_LOADING);
         basePresenter.getHotVideo();
     }
 
     private void refreshRecyclerView(List<VideoBean> videoBeanList) {
+        list.clear();
         videoBeanList.get(0).setItemType(VideoBean.TYPE_HEAD);
         list.addAll(videoBeanList);
         adapter.notifyDataSetChanged();
@@ -73,7 +67,6 @@ public class OpenEyesFragment extends BaseFragment<OpenEyePresenter> implements 
 
     @Override
     public void updateHotVideo(List<VideoBean> list) {
-        swipeLayout.setRefreshing(false);
         refreshRecyclerView(list);
     }
 }

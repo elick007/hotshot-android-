@@ -9,13 +9,19 @@ public class PlayerPresenter implements PlayerActivityContract.Presenter {
         this.playerActivity = playerActivity;
     }
 
+
     @Override
-    public void retrieveFav(String channel, String uid, String videoId) {
+    public void retrieveFav(String channel, String videoId) {
 
     }
 
     @Override
-    public void deleteFav(String channel, String uid, String videoId) {
+    public void addFav(String channal, String videoId) {
+
+    }
+
+    @Override
+    public void deleteFav(String channel, String videoId) {
 
     }
 

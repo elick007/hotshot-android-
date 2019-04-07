@@ -11,7 +11,11 @@ import android.view.View;
 import hotshot.elick.com.hotshot.R;
 import hotshot.elick.com.hotshot.UI.activities.BaseActivity;
 import hotshot.elick.com.hotshot.baseMVP.BasePresenter;
+import hotshot.elick.com.hotshot.widget.ExoPlayerControlView;
 import hotshot.elick.com.hotshot.widget.ExoPlayerView;
+
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 public abstract class PlayerActivityBase<T extends BasePresenter> extends BaseActivity<T> {
     private final int uiFlag19 = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -24,7 +28,7 @@ public abstract class PlayerActivityBase<T extends BasePresenter> extends BaseAc
     private boolean isLockedLandscape;
     private boolean isLockedPortrait;
     private MyOrientation myOrientation;
-
+    private ExoPlayerView exoPlayerView;
 
     @Override
     protected void onStart() {
@@ -44,9 +48,45 @@ public abstract class PlayerActivityBase<T extends BasePresenter> extends BaseAc
             myOrientation = new MyOrientation(this);
             myOrientation.enable();
         }
+        initExoPlayerView();
     }
 
     private void initExoPlayerView() {
+        exoPlayerView=setExoPlayerView();
+        exoPlayerView.setAdditionControlViewListener(new ExoPlayerControlView.AdditionControlViewListener() {
+            @Override
+            public void onClickCloseButton() {
+                if (PlayerActivityBase.this.getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE) {
+                    PlayerActivityBase.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+                    isLockedLandscape = false;
+                    isLockedPortrait = true;
+                } else {
+                    PlayerActivityBase.this.finish();
+                }
+            }
+
+            @Override
+            public void onClickMoreButton() {
+
+            }
+
+            @Override
+            public boolean onClickFullscreenButton() {
+                if (PlayerActivityBase.this.getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT) {
+                    PlayerActivityBase.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    resizePlayerView(true);
+                    isLockedLandscape = true;
+                    isLockedPortrait = false;
+                    return true;
+                } else {
+                    PlayerActivityBase.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    resizePlayerView(false);
+                    isLockedLandscape = false;
+                    isLockedPortrait = true;
+                    return false;
+                }
+            }
+        });
     }
 
     @Override
@@ -115,5 +155,6 @@ public abstract class PlayerActivityBase<T extends BasePresenter> extends BaseAc
     }
 
     protected abstract boolean enableOrientation();
+    protected abstract ExoPlayerView setExoPlayerView();
 
 }
