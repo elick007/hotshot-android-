@@ -92,7 +92,7 @@ public class HomeActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bottom_default_view_group, R.id.bottom_hot_view_group, R.id.bottom_discover_view_group,R.id.bottom_mine_view_group})
+    @OnClick({R.id.bottom_default_view_group, R.id.bottom_hot_view_group, R.id.bottom_discover_view_group, R.id.bottom_mine_view_group})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bottom_default_view_group:
@@ -115,37 +115,37 @@ public class HomeActivity extends BaseActivity {
         switch (currentItem) {
             case 0:
                 bottomDefaultImage.setImageResource(R.drawable.bottom_default_select);
-                setTextColor(bottomDefaultText,false);
+                setTextColor(bottomDefaultText, false);
                 break;
             case 1:
                 bottomHotImage.setImageResource(R.drawable.bottom_hot_select);
-                setTextColor(bottomHotText,false);
+                setTextColor(bottomHotText, false);
                 break;
             case 2:
                 bottomDiscoverImage.setImageResource(R.drawable.bottom_discover_select);
-                setTextColor(bottomDiscoverText,false);
+                setTextColor(bottomDiscoverText, false);
                 break;
             case 3:
                 bottomMineImage.setImageResource(R.drawable.bottom_mine_select);
-                setTextColor(bottomDiscoverText,false);
+                setTextColor(bottomDiscoverText, false);
         }
         homeActivityViewPager.setCurrentItem(newItem);
-        switch (newItem){
+        switch (newItem) {
             case 0:
                 bottomDefaultImage.setImageResource(R.drawable.bottom_default_selected);
-                setTextColor(bottomDefaultText,true);
+                setTextColor(bottomDefaultText, true);
                 break;
             case 1:
                 bottomHotImage.setImageResource(R.drawable.bottom_hot_selected);
-                setTextColor(bottomHotText,true);
+                setTextColor(bottomHotText, true);
                 break;
             case 2:
                 bottomDiscoverImage.setImageResource(R.drawable.bottom_discover_selected);
-                setTextColor(bottomDiscoverText,true);
+                setTextColor(bottomDiscoverText, true);
                 break;
             case 3:
                 bottomMineImage.setImageResource(R.drawable.bottom_mine_selected);
-                setTextColor(bottomDiscoverText,true);
+                setTextColor(bottomDiscoverText, true);
         }
     }
 
@@ -157,4 +157,15 @@ public class HomeActivity extends BaseActivity {
         }
     }
 
+    private long preTime;
+    @Override
+    public void onBackPressed() {
+        long curTime=System.currentTimeMillis();
+        if (curTime-preTime>2000){
+            showToast("再按一次退出");
+            preTime=curTime;
+        }else {
+            finish();
+        }
+    }
 }

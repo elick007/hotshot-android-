@@ -36,7 +36,6 @@ public class MineFragment extends BaseFragment<MinePresenter> implements MineFra
     FrameLayout mineFragmentAbout;
     @BindView(R.id.mine_fragment_help)
     FrameLayout mineFragmentHelp;
-    Unbinder unbinder;
 
     @Override
     protected MinePresenter setPresenter() {
@@ -61,12 +60,6 @@ public class MineFragment extends BaseFragment<MinePresenter> implements MineFra
     @Override
     public void onRetry() {
 
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     @OnClick({R.id.mine_fragment_user_avatar, R.id.mine_fragment_change_info, R.id.mine_fragment_history, R.id.mine_fragment_favor, R.id.mine_fragment_download, R.id.mine_fragment_setting, R.id.mine_fragment_about, R.id.mine_fragment_help})
