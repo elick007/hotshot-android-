@@ -25,7 +25,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import hotshot.elick.com.hotshot.R;
-import hotshot.elick.com.hotshot.UI.activities.player.PlayerActivity;
+import hotshot.elick.com.hotshot.UI.act.player.PlayerActivity;
 import hotshot.elick.com.hotshot.UI.fragments.BaseFragment;
 import hotshot.elick.com.hotshot.adapter.DYRVAdapter;
 import hotshot.elick.com.hotshot.adapter.OEMultiRVAdapter;

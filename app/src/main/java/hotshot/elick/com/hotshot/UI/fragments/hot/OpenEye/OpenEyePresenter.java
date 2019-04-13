@@ -27,7 +27,7 @@ public class OpenEyePresenter implements OpenEyeFragmentContract.Presenter {
     }
 
     @Override
-    public void dettachView(BaseView baseView) {
+    public void detachView(BaseView baseView) {
 
     }
 

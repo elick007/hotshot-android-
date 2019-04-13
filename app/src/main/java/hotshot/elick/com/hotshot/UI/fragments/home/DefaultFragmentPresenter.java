@@ -25,7 +25,7 @@ public class DefaultFragmentPresenter implements DefaultFragmentContract.Present
     }
 
     @Override
-    public void dettachView(BaseView baseView) {
+    public void detachView(BaseView baseView) {
 
     }
 

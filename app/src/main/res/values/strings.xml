@@ -7,6 +7,10 @@
     <string name="register_verify_wditext_hint"><font size="12">请输入验证码</font></string>
     <string name="register_password_wditext_hint"><font size="12">请输入最少6位密码</font></string>
     <string name="title_activity_settings">Settings</string>
-
+    <!--bottom navigation-->
+    <string name="bottom_navigation_default">首页</string>
+    <string name="bottom_navigation_hot">热门</string>
+    <string name="bottom_navigation_discover">发现</string>
+    <string name="bottom_navigation_mine">我的</string>
 
 </resources>

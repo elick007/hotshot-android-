@@ -9,8 +9,9 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:layout_marginLeft="68dp"
-        android:layout_marginRight="68dp"
+        android:paddingLeft="68dp"
+        android:paddingRight="68dp"
+        android:background="@color/colorPrimary"
         app:tabMode="scrollable"
         app:tabBackground="@android:color/transparent"
         app:tabTextColor="@color/bottom_navigation_select"
@@ -20,11 +21,6 @@
         app:tabIndicatorFullWidth="false"
         app:tabIndicatorHeight="4dp"
         app:tabGravity="center"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginTop="4dp"
-        android:background="@color/gray_line_tint"/>
 <android.support.v4.view.ViewPager
     android:id="@+id/view_pager"
     android:layout_width="match_parent"

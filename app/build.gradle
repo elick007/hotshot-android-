@@ -6,15 +6,35 @@ android {
         applicationId "hotshot.elick.com.hotshot"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+    }
+    signingConfigs{
+        debug{
+            storeFile=file('elick.jks')
+            keyAlias 'key0'
+            keyPassword '950810'
+            storePassword '950810'
+        }
+        release{
+            storeFile=file('elick.jks')
+            keyAlias 'key0'
+            keyPassword '950810'
+            storePassword '950810'
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug{
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
     compileOptions {
@@ -30,6 +50,7 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:support-vector-drawable:28.0.0'
+    implementation 'com.android.support:support-annotations:28.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

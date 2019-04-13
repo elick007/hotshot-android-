@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg_gradient"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/act_register_close_iv"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center|left"
+            android:background="@drawable/ic_arrow_left_white" />
+
+        <TextView
+            android:id="@+id/act_register_to_login_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|right"
+            android:text="登录"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="28dp"
+        android:text="注册"
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/act_register_username_et"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@null"
+        android:hint="请输入用户名"
+        android:textColorHint="@color/gray_line_hint"
+        android:textSize="20sp"
+        android:inputType="text" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="32dp"
+        android:background="@color/gray_line_hint" />
+    <EditText
+        android:id="@+id/act_register_passwd_et"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@null"
+        android:hint="请输入密码"
+        android:inputType="textPassword"
+        android:textColorHint="@color/gray_line_hint"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="32dp"
+        android:background="@color/gray_line_hint" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/act_register_phone_et"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="请输入手机号"
+            android:inputType="phone"
+            android:textColorHint="@color/gray_line_hint"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/act_register_verify_btn"
+            android:layout_width="98dp"
+            android:layout_height="32dp"
+            android:background="@drawable/button_corner"
+            android:text="获取验证码"
+            android:textColor="@color/gray_line_hint" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_line_hint"
+        android:layout_marginBottom="32dp"/>
+    <EditText
+        android:id="@+id/act_register_verify_et"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@null"
+        android:hint="请输入验证码"
+        android:inputType="number"
+        android:textColorHint="@color/gray_line_hint"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="32dp"
+        android:background="@color/gray_line_hint" />
+    <Button
+        android:id="@+id/act_register_register_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/button_corner"
+        android:text="注册"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+</LinearLayout>

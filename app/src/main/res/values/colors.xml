@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#bbd5d5d5</color>
+    <color name="colorPrimary">#313335</color>
+    <color name="colorPrimaryDark">#313335</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffff</color>
     <color name="gray_line">#d6d6d6</color>
     <color name="gray_button">#77ffffff</color>
-    <color name="bottom_navigation_select">#bfbfbf</color>
-    <color name="bottom_navigation_selected">#333333</color>
-    <color name="gray_line_tint">#cfcfcf</color>
+    <color name="bottom_navigation_select">#d6d6d6</color>
+    <color name="bottom_navigation_selected">#dbb381</color>
+    <color name="gray_line_hint">#cfcfcf</color>
     <color name="video_dutation_tv_bg">#333333</color>
     <color name="video_item_dy_tv">#fdfdfe</color>
     <color name="video_bottom_progress_color">#fdcc44</color>

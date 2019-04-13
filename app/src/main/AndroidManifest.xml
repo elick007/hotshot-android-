@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".UI.activities.HomeActivity"
+            android:name=".UI.act.HomeActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|navigation|screenLayout"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -25,14 +25,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.LoginActivity" />
+        <activity android:name=".UI.act.login.LoginActivity"
+            android:launchMode="singleTask"/>
         <activity
-            android:name=".UI.activities.player.PlayerActivity"
+            android:name=".UI.act.player.PlayerActivity"
             android:configChanges="orientation|screenSize|screenLayout"
             android:hardwareAccelerated="true" />
-        <activity android:name=".UI.activities.player.DouyinPlayerActivity"
+        <activity
+            android:name=".UI.act.player.DouyinPlayerActivity"
             android:configChanges="keyboardHidden|navigation|screenLayout"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UI.act.register.RegisterActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>
