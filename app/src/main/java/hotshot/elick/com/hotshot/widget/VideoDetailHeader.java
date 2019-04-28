@@ -38,7 +38,7 @@ public class VideoDetailHeader extends LinearLayout {
 
     private void initView() {
         videoDetailTitle.setText(videoBean.getTitle());
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
         Date date=new Date(Long.parseLong(videoBean.getDate()));
         videoDetailDate.setText(simpleDateFormat.format(date));
         videoDetailContent.setText(videoBean.getDescription());

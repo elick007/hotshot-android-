@@ -104,7 +104,10 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> impl
         };
 
         defaultVideoFragmentHorizonRv.setAdapter(oeAdapter);
-        defaultVideoFragmentHorizonRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        defaultVideoFragmentHorizonRv.setLayoutManager(new GridLayoutManager(context,2));
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL);
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.default_fragment_list_divider));
+        defaultVideoFragmentHorizonRv.addItemDecoration(dividerItemDecoration);
         //listener
         oeAdapter.setOnItemClickListener((adapter, view, position) -> {
             PlayerActivity.startUp(context, "oe", (VideoBean) adapter.getData().get(position));
@@ -116,6 +119,8 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> impl
         dyAdapter = new DYRVAdapter(R.layout.videos_list_item_dy, dyVideoList);
         TextView textView = new TextView(context);
         textView.setText("-没有更多内容-");
+        textView.setTextColor(0xFFFFFFFF);
+        textView.setMinHeight(52);
         textView.setGravity(Gravity.CENTER);
         textView.setMinHeight(DensityUtil.dip2px(context, 30));
         dyAdapter.setFooterView(textView, 2);
@@ -149,9 +154,9 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> impl
         };
         defaultVideoFragmentVerticalRv.setAdapter(lspAdapter);
         defaultVideoFragmentVerticalRv.setLayoutManager(new LinearLayoutManager(getContext()));
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
-        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.default_fragment_list_divider));
-        defaultVideoFragmentVerticalRv.addItemDecoration(dividerItemDecoration);
+//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(deContext, DividerItemDecoration.VERTICAL);
+//        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(deContext, R.drawable.default_fragment_list_divider));
+//        defaultVideoFragmentVerticalRv.addItemDecoration(dividerItemDecoration);
         //listener
         lspAdapter.setOnItemClickListener((adapter, view, position) -> {
             PlayerActivity.startUp(context, "lsp", (VideoBean) adapter.getData().get(position));

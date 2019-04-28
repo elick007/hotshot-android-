@@ -14,14 +14,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:textSize="@dimen/item_text_size_title"
-        android:textColor="@color/bottom_navigation_selected"/>
+        android:textColor="@color/fragment_video_text"/>
         <TextView
             android:id="@+id/lsp_item_author_normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:textSize="@dimen/item_text_size_author"
-            android:textColor="@color/bottom_navigation_select"/>
+            android:textColor="@color/fragment_video_author"/>
     </FrameLayout>
     <ImageView
         android:id="@+id/lsp_item_image_normal"

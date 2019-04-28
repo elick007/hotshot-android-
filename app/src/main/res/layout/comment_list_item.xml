@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="18dp"
+    android:orientation="horizontal">
+    <hotshot.elick.com.hotshot.widget.CircleImageView
+        android:id="@+id/user_avatar"
+        android:layout_width="46dp"
+        android:layout_height="46dp" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/bottom_navigation_selected"
+            android:layout_gravity="top"
+
+            />
+        <TextView
+            android:id="@+id/user_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_gravity="bottom"
+            android:textColor="@color/fragment_video_text"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

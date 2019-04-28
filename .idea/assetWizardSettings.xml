@@ -33,9 +33,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="ic_arrow_left_white" />
+                                      <entry key="outputName" value="ic_back_brown" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="ffffff" />
+                                      <entry key="themeColor" value="dbb381" />
                                     </map>
                                   </option>
                                 </PersistentState>

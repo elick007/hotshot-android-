@@ -12,4 +12,7 @@
     <color name="video_dutation_tv_bg">#333333</color>
     <color name="video_item_dy_tv">#fdfdfe</color>
     <color name="video_bottom_progress_color">#fdcc44</color>
+    <color name="fragment_bg">#252525</color>
+    <color name="fragment_video_text">#b2b2b2</color>
+    <color name="fragment_video_author">#9b9b9b</color>
 </resources>

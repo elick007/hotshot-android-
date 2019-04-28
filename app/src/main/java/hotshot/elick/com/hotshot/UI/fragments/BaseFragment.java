@@ -65,8 +65,8 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
         if (statusLayout != null) {
             statusLayout.setRetryListener(this);
         }
-        swipeRefreshLayout=rootView.findViewById(R.id.swipe_layout);
-        if (swipeRefreshLayout!=null){
+        swipeRefreshLayout = rootView.findViewById(R.id.swipe_layout);
+        if (swipeRefreshLayout != null) {
             swipeRefreshLayout.setOnRefreshListener(() -> {
                 statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_LOADING);
                 startLoadData();
@@ -82,6 +82,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
             isVisible = true;
             checkLoadable();
         }
+
     }
 
     private void checkLoadable() {
@@ -105,19 +106,24 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
 
     @Override
     public void onPresenterSuccess() {
-        if (swipeRefreshLayout!=null)
+        if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(false);
         statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_GONE);
     }
 
     @Override
     public void onPresenterFail(String msg) {
-        if (swipeRefreshLayout!=null)
+        if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(false);
         if (!TextUtils.isEmpty(msg))
-        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
         statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_ERROE);
     }
+
+    protected void showToast(String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
+
     protected abstract int setLayoutResId();
 
     protected abstract T setPresenter();

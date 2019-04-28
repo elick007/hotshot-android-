@@ -35,8 +35,8 @@ public class DouYinFragment extends BaseFragment<DouYinPrensenter> implements Do
         adapter = new DYRVAdapter(R.layout.videos_list_item_dy, mList);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
         recyclerView.setAdapter(adapter);
-        //recyclerView.addItemDecoration(new DividerItemDecoration(context,DividerItemDecoration.HORIZONTAL));
-        //recyclerView.addItemDecoration(new DividerItemDecoration(context,DividerItemDecoration.VERTICAL));
+        //recyclerView.addItemDecoration(new DividerItemDecoration(deContext,DividerItemDecoration.HORIZONTAL));
+        //recyclerView.addItemDecoration(new DividerItemDecoration(deContext,DividerItemDecoration.VERTICAL));
         adapter.setOnItemClickListener((adapter, view, position) -> {
 //            PlayerActivity.startUp(getContext(),"dy", (VideoBean) adapter.getData().get(position));
             Intent intent = new Intent(context, DouyinPlayerActivity.class);

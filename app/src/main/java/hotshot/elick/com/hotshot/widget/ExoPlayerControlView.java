@@ -29,7 +29,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
@@ -93,14 +92,14 @@ import hotshot.elick.com.hotshot.R;
  * below for more details.
  * <ul>
  * <li>Corresponding method: None
- * <li>Default: {@code R.id.exo_player_control_view}
+ * <li>Default: {@code R.id.my_exo_player_control_view}
  * </ul>
  * </ul>
  * <p>
  * <h3>Overriding the layout file</h3>
  * <p>
  * To customize the layout of PlayerControlView throughout your app, or just for certain
- * configurations, you can define {@code exo_player_control_view.xml} layout files in your
+ * configurations, you can define {@code my_exo_player_control_view.xmlxml} layout files in your
  * application {@code res/layout*} directories. These layouts will override the one provided by the
  * ExoPlayer library, and will be inflated for use by PlayerControlView. The view identifies and
  * binds its children by looking for the following ids:
@@ -159,11 +158,11 @@ import hotshot.elick.com.hotshot.R;
  * <p>
  * <h3>Specifying a custom layout file</h3>
  * <p>
- * Defining your own {@code exo_player_control_view.xml} is useful to customize the layout of
+ * Defining your own {@code my_exo_player_control_viewiew.xml} is useful to customize the layout of
  * PlayerControlView throughout your application. It's also possible to customize the layout for a
  * single instance in a layout file. This is achieved by setting the {@code controller_layout_id}
  * attribute on a PlayerControlView. This will cause the specified layout to be inflated instead of
- * {@code exo_player_control_view.xml} for only the instance on which the attribute is set.
+ * {@code my_exo_player_control_viewiew.xml} for only the instance on which the attribute is set.
  */
 public class ExoPlayerControlView extends FrameLayout {
 
@@ -291,7 +290,7 @@ public class ExoPlayerControlView extends FrameLayout {
     public ExoPlayerControlView(
             Context context, AttributeSet attrs, int defStyleAttr, AttributeSet playbackAttrs) {
         super(context, attrs, defStyleAttr);
-        int controllerLayoutId = R.layout.exo_player_control_view;
+        int controllerLayoutId = R.layout.my_exo_player_control_view;
         rewindMs = DEFAULT_REWIND_MS;
         fastForwardMs = DEFAULT_FAST_FORWARD_MS;
         showTimeoutMs = DEFAULT_SHOW_TIMEOUT_MS;

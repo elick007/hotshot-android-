@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".MyApplication"
@@ -25,18 +26,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.act.login.LoginActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".UI.act.login.LoginActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".UI.act.player.PlayerActivity"
             android:configChanges="orientation|screenSize|screenLayout"
-            android:hardwareAccelerated="true" />
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".UI.act.player.DouyinPlayerActivity"
             android:configChanges="keyboardHidden|navigation|screenLayout"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UI.act.register.RegisterActivity"
-            android:launchMode="singleTask"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.act.register.RegisterActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".UI.act.alterInfo.AlterUserInfoAct"/>
     </application>
 
 </manifest>

@@ -34,8 +34,7 @@
         android:textColor="@color/white"
         android:layout_gravity="center"
         android:textSize="22sp"
-        android:paddingTop="12dp"
-        android:text="小小鸟"/>
+        android:paddingTop="12dp" />
 </LinearLayout>
 </FrameLayout>
     <LinearLayout

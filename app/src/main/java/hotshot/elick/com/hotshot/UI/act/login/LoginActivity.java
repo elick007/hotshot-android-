@@ -45,6 +45,7 @@ public class LoginActivity extends BaseActivity<LoginActivityPresenter> implemen
     LinearLayout actLoginWechatVg;
     @BindView(R.id.act_login_weibo_vg)
     LinearLayout actLoginWeiboVg;
+    public final static int LOGIN_ACT_CODE=1000;
 
     @Override
     protected int setLayoutResId() {
@@ -120,6 +121,7 @@ public class LoginActivity extends BaseActivity<LoginActivityPresenter> implemen
 
     @Override
     public void onLoginSuccess() {
+        setResult(RESULT_OK);
         this.finish();
     }
 }

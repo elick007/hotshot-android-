@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="334dp"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingLeft="8dp">
+    android:orientation="vertical">
     <ImageView
         android:id="@+id/default_fragment_oe_item_image"
         android:layout_width="match_parent"
-        android:layout_height="190dp"
-        android:paddingTop="8dp" />
+        android:layout_height="128dp" />
     <TextView
         android:id="@+id/default_fragment_oe_item_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="6dp"
-        android:textColor="@color/bottom_navigation_selected"
-        android:textSize="@dimen/item_text_size_title" />
+        android:textColor="@color/fragment_video_text"
+        android:maxLines="1"/>
 
 </LinearLayout>

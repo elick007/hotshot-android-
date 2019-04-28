@@ -11,15 +11,15 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
-    signingConfigs{
-        debug{
-            storeFile=file('elick.jks')
+    signingConfigs {
+        debug {
+            storeFile = file('elick.jks')
             keyAlias 'key0'
             keyPassword '950810'
             storePassword '950810'
         }
-        release{
-            storeFile=file('elick.jks')
+        release {
+            storeFile = file('elick.jks')
             keyAlias 'key0'
             keyPassword '950810'
             storePassword '950810'
@@ -31,7 +31,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
-        debug{
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
@@ -76,4 +76,5 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     //banner
     implementation 'com.bigkoo:ConvenientBanner:2.1.4'
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
 }

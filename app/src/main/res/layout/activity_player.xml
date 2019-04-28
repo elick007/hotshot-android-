@@ -9,7 +9,7 @@
         android:id="@+id/exo_player_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:controller_layout_id="@layout/exo_player_control_view" />
+        app:controller_layout_id="@layout/my_exo_player_control_view" />
 
 
     <!--<hotshot.elick.com.hotshot.PullDownEventView-->
@@ -22,17 +22,76 @@
         android:id="@+id/ptr_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="@drawable/player_act_video_content_gradient_bg"
-        app:ptr_ratio_of_header_height_to_refresh="1.0"
-        android:layout_weight="1">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recommend_recycler_view"
+        app:ptr_ratio_of_header_height_to_refresh="1.0">
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/player_act_video_content_gradient_bg"
-           />
+            android:orientation="vertical">
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recommend_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="18dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="18dp"
+                android:text="评论"
+                android:textSize="16sp"
+                android:textColor="@color/gray_line_hint"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_line"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/comment_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="18dp"/>
+        </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
     </in.srain.cube.views.ptr.PtrFrameLayout>
     <!--</hotshot.elick.com.hotshot.PullDownEventView>-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/comment_et"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="说点什么吧..."/>
+        <View
+            android:id="@+id/comment_ic"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginRight="18dp"
+            android:layout_gravity="center"
+            android:background="@drawable/comment"/>
+        <CheckBox
+            android:id="@+id/favor_checkbox"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="18dp"
+            android:layout_gravity="center"
+            android:background="@drawable/favor_checkbox_bg"
+            android:button="@null"/>
+        <CheckBox
+            android:id="@+id/download_checkbox"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="18dp"
+            android:layout_gravity="center"
+            android:background="@drawable/download_checkbox_bg"
+            android:button="@null" />
+    </LinearLayout>
 </LinearLayout>

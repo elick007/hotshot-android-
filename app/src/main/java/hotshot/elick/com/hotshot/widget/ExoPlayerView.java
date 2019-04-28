@@ -67,7 +67,6 @@ import com.google.android.exoplayer2.video.VideoListener;
 import java.util.List;
 
 import hotshot.elick.com.hotshot.R;
-import hotshot.elick.com.hotshot.utils.MyLog;
 
 /**
  * A high level view for {@link Player} media playbacks. It displays video, subtitles and album art
@@ -147,13 +146,13 @@ import hotshot.elick.com.hotshot.utils.MyLog;
  * for more details.
  * <ul>
  * <li>Corresponding method: None
- * <li>Default: {@code R.id.exo_player_view}
+ * <li>Default: {@code R.id.my_exo_player_view}
  * </ul>
  * <li><b>{@code controller_layout_id}</b> - Specifies the id of the layout resource to be
  * inflated by the child {@link PlayerControlView}. See below for more details.
  * <ul>
  * <li>Corresponding method: None
- * <li>Default: {@code R.id.exo_player_control_view}
+ * <li>Default: {@code R.id.my_exo_player_control_view}
  * </ul>
  * <li>All attributes that can be set on a {@link PlayerControlView} can also be set on a
  * PlayerView, and will be propagated to the inflated {@link PlayerControlView} unless the
@@ -163,7 +162,7 @@ import hotshot.elick.com.hotshot.utils.MyLog;
  * <h3>Overriding the layout file</h3>
  * <p>
  * To customize the layout of PlayerView throughout your app, or just for certain configurations,
- * you can define {@code exo_player_view.xml} layout files in your application {@code res/layout*}
+ * you can define {@code my_exo_player_viewiew.xml} layout files in your application {@code res/layout*}
  * directories. These layouts will override the one provided by the ExoPlayer library, and will be
  * inflated for use by PlayerView. The view identifies and binds its children by looking for the
  * following ids:
@@ -224,11 +223,11 @@ import hotshot.elick.com.hotshot.utils.MyLog;
  * <p>
  * <h3>Specifying a custom layout file</h3>
  * <p>
- * Defining your own {@code exo_player_view.xml} is useful to customize the layout of PlayerView
+ * Defining your own {@code my_exo_player_view.xmlxml} is useful to customize the layout of PlayerView
  * throughout your application. It's also possible to customize the layout for a single instance in
  * a layout file. This is achieved by setting the {@code player_layout_id} attribute on a
  * PlayerView. This will cause the specified layout to be inflated instead of {@code
- * exo_player_view.xml} for only the instance on which the attribute is set.
+ * my_exo_player_view.xmlxml} for only the instance on which the attribute is set.
  */
 public class ExoPlayerView extends FrameLayout {
 
@@ -302,7 +301,7 @@ public class ExoPlayerView extends FrameLayout {
 
         boolean shutterColorSet = false;
         int shutterColor = 0;
-        int playerLayoutId = R.layout.exo_player_view;
+        int playerLayoutId = R.layout.my_exo_player_view;
         boolean useArtwork = true;
         int defaultArtworkId = 0;
         boolean useController = true;

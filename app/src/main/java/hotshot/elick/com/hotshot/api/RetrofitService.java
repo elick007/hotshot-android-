@@ -12,6 +12,7 @@ public class RetrofitService {
     private static RetrofitService instance;
     private static Retrofit retrofit;
     private static volatile HotShotApi hotShotApi;
+    public static String BASE_URL="http://172.16.100.196:8000";
 
     public static RetrofitService getInstance() {
         if (instance == null) {
@@ -33,7 +34,7 @@ public class RetrofitService {
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl("http://172.16.100.196:8000/")
+                .baseUrl(BASE_URL)
                 .build();
     }
 

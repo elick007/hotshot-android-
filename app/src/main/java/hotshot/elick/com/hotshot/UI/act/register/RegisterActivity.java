@@ -17,7 +17,7 @@ import hotshot.elick.com.hotshot.UI.act.BaseActivity;
 import hotshot.elick.com.hotshot.UI.act.login.LoginActivity;
 import hotshot.elick.com.hotshot.baseMVP.BasePresenter;
 
-public class RegisterActivity extends BaseActivity implements RegisterActivityContract.View{
+public class RegisterActivity extends BaseActivity<RegisterPresenter> implements RegisterActivityContract.View {
     @BindView(R.id.act_register_close_iv)
     ImageView actRegisterCloseIv;
     @BindView(R.id.act_register_to_login_tv)
@@ -41,8 +41,8 @@ public class RegisterActivity extends BaseActivity implements RegisterActivityCo
     }
 
     @Override
-    protected BasePresenter setPresenter() {
-        return null;
+    protected RegisterPresenter setPresenter() {
+        return new RegisterPresenter(this);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class RegisterActivity extends BaseActivity implements RegisterActivityCo
     }
 
     public static void start(Context context) {
-        Intent intent=new Intent(context,RegisterActivity.class);
+        Intent intent = new Intent(context, RegisterActivity.class);
         context.startActivity(intent);
     }
 
@@ -76,9 +76,17 @@ public class RegisterActivity extends BaseActivity implements RegisterActivityCo
                 LoginActivity.start(this);
                 break;
             case R.id.act_register_verify_btn:
+                basePresenter.requireVerify(actRegisterPhoneEt.getText().toString().trim(), actRegisterVerifyBtn);
                 break;
             case R.id.act_register_register_btn:
+                basePresenter.doRegister(actRegisterUsernameEt.getText().toString().trim(), actRegisterPasswdEt.getText().toString().trim(),
+                        actRegisterPhoneEt.getText().toString().trim(), actRegisterVerifyEt.getText().toString().trim());
                 break;
         }
+    }
+
+    @Override
+    public void registerSuccess() {
+        this.finish();
     }
 }

@@ -1,21 +1,16 @@
 package hotshot.elick.com.hotshot.entity;
 
-import android.support.annotation.IntDef;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
 public class ResponseBase<T> {
     private int code;
-    private String message;
+    private String msg;
     private T data;
 
     public int getCode() {
         return code;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
     public T getData() {
@@ -26,8 +21,8 @@ public class ResponseBase<T> {
         this.code = code;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMsg(String msg) {
+        this.msg = this.msg;
     }
 
     public void setData(T data) {
