@@ -56,6 +56,11 @@ public interface HotShotApi {
     @GET("/api/videos/public/list/")
     Observable<ResponseBase<List<PubVideoBean>>> getPubVideos();
 
+    //发布视频
+    @POST("/api/videos/public/upload/")
+    @Multipart
+    Observable<ResponseBase> uploadVideo(@Part("suffix") RequestBody suffix,@Part MultipartBody.Part video,@Part("content") RequestBody content,@Header("Authorization") String token);
+
     //注册
     @POST("/api/user/register/")
     @FormUrlEncoded

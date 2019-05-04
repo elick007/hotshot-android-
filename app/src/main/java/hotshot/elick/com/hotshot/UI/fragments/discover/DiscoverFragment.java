@@ -1,13 +1,12 @@
 package hotshot.elick.com.hotshot.UI.fragments.discover;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -47,7 +46,6 @@ import hotshot.elick.com.hotshot.R;
 import hotshot.elick.com.hotshot.UI.fragments.BaseFragment;
 import hotshot.elick.com.hotshot.api.RetrofitService;
 import hotshot.elick.com.hotshot.entity.PubVideoBean;
-import hotshot.elick.com.hotshot.utils.DensityUtil;
 import hotshot.elick.com.hotshot.utils.MyLog;
 
 import static android.app.Activity.RESULT_OK;
@@ -59,7 +57,7 @@ public class DiscoverFragment extends BaseFragment<DiscoverPresenter> implements
     RecyclerView pubVideoList;
     private List<PubVideoBean> mList;
     private BaseQuickAdapter<PubVideoBean, BaseViewHolder> adapter;
-    private final static int VIDEO_CODE=3000;
+    private final static int VIDEO_CODE = 3000;
 
     @Override
     protected int setLayoutResId() {
@@ -133,7 +131,7 @@ public class DiscoverFragment extends BaseFragment<DiscoverPresenter> implements
 
     @OnClick(R.id.upload_btn)
     public void onViewClicked() {
-        PictureSelector.create(getActivity())
+        PictureSelector.create(this)
                 .openGallery(PictureMimeType.ofVideo())
                 .selectionMode(PictureConfig.SINGLE)
                 .enablePreviewAudio(true)
@@ -143,10 +141,26 @@ public class DiscoverFragment extends BaseFragment<DiscoverPresenter> implements
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode==RESULT_OK){
-            switch (requestCode){
+        MyLog.e("what happen");
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
                 case VIDEO_CODE:
+                    EditDialog editDialog = new EditDialog(context, new EditDialog.PublicClickListener() {
+                        @Override
+                        public void onCancel() {
+
+                        }
+
+                        @Override
+                        public void onPublic(String content) {
+                            List<LocalMedia> pictures = PictureSelector.obtainMultipleResult(data);
+                            if (pictures.size() > 0) {
+                                String videoPath = pictures.get(0).getPath();
+                                basePresenter.uploadVideo(videoPath, content);
+                            }
+                        }
+                    });
+                    editDialog.show();
                     break;
             }
         }
@@ -154,6 +168,7 @@ public class DiscoverFragment extends BaseFragment<DiscoverPresenter> implements
 
     @Override
     public void updateList(List<PubVideoBean> list) {
+        swipeRefreshLayout.setRefreshing(false);
         mList.clear();
         mList.addAll(list);
         adapter.notifyDataSetChanged();
@@ -162,16 +177,14 @@ public class DiscoverFragment extends BaseFragment<DiscoverPresenter> implements
     @Override
     public void onDestroy() {
         super.onDestroy();
-        MyLog.d("video begin release");
-        if (pubVideoList!=null){
+        if (pubVideoList != null) {
             for (int i = 0; i < pubVideoList.getChildCount(); i++) {
                 BaseViewHolder viewHolder = (BaseViewHolder) pubVideoList.findViewHolderForLayoutPosition(i);
                 if (viewHolder != null) {
                     PlayerView playerView = viewHolder.getView(R.id.player_view);
-                    SimpleExoPlayer simpleExoPlayer= (SimpleExoPlayer) playerView.getPlayer();
-                    if (simpleExoPlayer!=null){
+                    SimpleExoPlayer simpleExoPlayer = (SimpleExoPlayer) playerView.getPlayer();
+                    if (simpleExoPlayer != null) {
                         simpleExoPlayer.release();
-                        MyLog.d("released");
                     }
                 }
             }
@@ -183,14 +196,14 @@ public class DiscoverFragment extends BaseFragment<DiscoverPresenter> implements
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (!isVisibleToUser){
-            if (pubVideoList!=null){
+        if (!isVisibleToUser) {
+            if (pubVideoList != null) {
                 for (int i = 0; i < pubVideoList.getChildCount(); i++) {
                     BaseViewHolder viewHolder = (BaseViewHolder) pubVideoList.findViewHolderForLayoutPosition(i);
                     if (viewHolder != null) {
                         PlayerView playerView = viewHolder.getView(R.id.player_view);
-                        SimpleExoPlayer simpleExoPlayer= (SimpleExoPlayer) playerView.getPlayer();
-                        if (simpleExoPlayer!=null){
+                        SimpleExoPlayer simpleExoPlayer = (SimpleExoPlayer) playerView.getPlayer();
+                        if (simpleExoPlayer != null) {
                             simpleExoPlayer.setPlayWhenReady(false);
                         }
                     }

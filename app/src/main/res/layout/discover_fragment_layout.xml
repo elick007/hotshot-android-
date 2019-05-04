@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/fragment_bg">
+    android:background="@color/fragment_bg"
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -27,9 +27,15 @@
             android:layout_gravity="right"
             android:background="@drawable/ic_add" />
     </FrameLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/pub_video_list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        >
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/pub_video_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

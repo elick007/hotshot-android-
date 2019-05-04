@@ -18,6 +18,7 @@ import hotshot.elick.com.hotshot.R;
 import hotshot.elick.com.hotshot.baseMVP.BasePresenter;
 import hotshot.elick.com.hotshot.baseMVP.BaseView;
 import hotshot.elick.com.hotshot.utils.MyLog;
+import hotshot.elick.com.hotshot.widget.LoadingDialog;
 import hotshot.elick.com.hotshot.widget.StatusLayout;
 
 public abstract class BaseFragment<T extends BasePresenter> extends Fragment implements BaseView, StatusLayout.RetryListener {
@@ -31,6 +32,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     private boolean isVisible;
     protected StatusLayout statusLayout;
     protected SwipeRefreshLayout swipeRefreshLayout;
+    private LoadingDialog loadingDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,7 +70,9 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
         swipeRefreshLayout = rootView.findViewById(R.id.swipe_layout);
         if (swipeRefreshLayout != null) {
             swipeRefreshLayout.setOnRefreshListener(() -> {
-                statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_LOADING);
+                if (statusLayout != null) {
+                    statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_LOADING);
+                }
                 startLoadData();
             });
         }
@@ -108,6 +112,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     public void onPresenterSuccess() {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(false);
+        if (statusLayout!=null)
         statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_GONE);
     }
 
@@ -117,10 +122,24 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
             swipeRefreshLayout.setRefreshing(false);
         if (!TextUtils.isEmpty(msg))
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        if (statusLayout!=null)
         statusLayout.setLayoutStatus(StatusLayout.STATUS_LAYOUT_ERROE);
     }
 
-    protected void showToast(String msg) {
+    public void showLoading() {
+        if (loadingDialog == null) {
+            loadingDialog = new LoadingDialog.Builder(context).build();
+        }
+        loadingDialog.show();
+    }
+
+    public void dismissLoading() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
+    }
+
+    public void showToast(String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
