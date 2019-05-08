@@ -10,6 +10,7 @@ import java.util.List;
 import butterknife.BindView;
 import hotshot.elick.com.hotshot.R;
 import hotshot.elick.com.hotshot.UI.act.player.PlayerActivity;
+import hotshot.elick.com.hotshot.UI.act.player.PlayerActivityBase;
 import hotshot.elick.com.hotshot.UI.fragments.BaseFragment;
 import hotshot.elick.com.hotshot.adapter.LiVideoMultiRVAdapter;
 import hotshot.elick.com.hotshot.entity.VideoBean;
@@ -34,7 +35,7 @@ public class LiVideoFragment extends BaseFragment<LiVideoPresenter> implements L
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter.setOnItemClickListener((adapter, view, position) -> {
-            PlayerActivity.startUp(getContext(), "lsp", (VideoBean) adapter.getData().get(position));
+            PlayerActivityBase.startUp(getContext(),  (VideoBean) adapter.getData().get(position));
             getActivity().overridePendingTransition(R.anim.activity_start_from_bottom_to_top_anim, 0);
         });
     }

@@ -13,4 +13,8 @@
     <string name="bottom_navigation_discover">发现</string>
     <string name="bottom_navigation_mine">我的</string>
 
+    <string name="pause">暂停</string>
+    <string name="start">开始</string>
+    <string name="delete">删除</string>
+    <string name="tasks_manager_demo_name">hotshot</string>
 </resources>

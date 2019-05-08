@@ -12,6 +12,7 @@ import java.util.List;
 import butterknife.BindView;
 import hotshot.elick.com.hotshot.R;
 import hotshot.elick.com.hotshot.UI.act.player.DouyinPlayerActivity;
+import hotshot.elick.com.hotshot.UI.act.player.PlayerActivityBase;
 import hotshot.elick.com.hotshot.UI.fragments.BaseFragment;
 import hotshot.elick.com.hotshot.adapter.DYRVAdapter;
 import hotshot.elick.com.hotshot.entity.VideoBean;
@@ -39,9 +40,7 @@ public class DouYinFragment extends BaseFragment<DouYinPrensenter> implements Do
         //recyclerView.addItemDecoration(new DividerItemDecoration(deContext,DividerItemDecoration.VERTICAL));
         adapter.setOnItemClickListener((adapter, view, position) -> {
 //            PlayerActivity.startUp(getContext(),"dy", (VideoBean) adapter.getData().get(position));
-            Intent intent = new Intent(context, DouyinPlayerActivity.class);
-            intent.putExtra("video_info", (VideoBean) adapter.getData().get(position));
-            context.startActivity(intent);
+            PlayerActivityBase.startUp(context, (VideoBean) adapter.getData().get(position));
             getActivity().overridePendingTransition(R.anim.activity_start_from_bottom_to_top_anim, 0);
         });
     }

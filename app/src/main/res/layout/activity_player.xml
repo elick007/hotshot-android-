@@ -77,16 +77,16 @@
             android:layout_marginRight="18dp"
             android:layout_gravity="center"
             android:background="@drawable/comment"/>
-        <CheckBox
-            android:id="@+id/favor_checkbox"
+        <Button
+            android:id="@+id/favor_btn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginRight="18dp"
             android:layout_gravity="center"
             android:background="@drawable/favor_checkbox_bg"
             android:button="@null"/>
-        <CheckBox
-            android:id="@+id/download_checkbox"
+        <Button
+            android:id="@+id/download_btn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginRight="18dp"

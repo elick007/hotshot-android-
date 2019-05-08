@@ -1,104 +1,126 @@
 package hotshot.elick.com.hotshot.UI.act.player;
 
-import android.content.res.Configuration;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hotshot.elick.com.hotshot.R;
+import hotshot.elick.com.hotshot.UI.act.dowload.DownloadActivity;
 import hotshot.elick.com.hotshot.entity.VideoBean;
+import hotshot.elick.com.hotshot.entity.VideoComment;
 import hotshot.elick.com.hotshot.widget.ExoPlayerView;
 
-import static com.google.android.exoplayer2.Player.REPEAT_MODE_ONE;
-
-public class DouyinPlayerActivity extends AppCompatActivity {
+public class DouyinPlayerActivity extends PlayerActivityBase {
 
     @BindView(R.id.exo_player_view)
-    ExoPlayerView exoPlayerView;
+    ExoPlayerView playerView;
     @BindView(R.id.back_image)
     ImageView backImage;
     @BindView(R.id.video_content)
     TextView videoContent;
-    private VideoBean video;
-    private SimpleExoPlayer simpleExoPlayer;
-    private final int uiFlag19 = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_FULLSCREEN
-            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-    private final int uiFlag14 = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+    @BindView(R.id.favor_btn)
+    Button favorBtn;
+    @BindView(R.id.download_btn)
+    Button downloadBtn;
+    private boolean isFav;
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        if (Build.VERSION.SDK_INT>19){
-            getWindow().getDecorView().setSystemUiVisibility(uiFlag19);
-        }else {
-            getWindow().getDecorView().setSystemUiVisibility(uiFlag14);
+    protected int setLayoutResId() {
+        return R.layout.activity_douyin_player;
+    }
+
+    @Override
+    protected void initView() {
+        videoBean = (VideoBean) getIntent().getSerializableExtra("video");
+        //playerView.resizeScreen(true);
+        playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+        videoContent.setText(videoBean.getDescription());
+        basePresenter.retrieveFav(videoBean.getType(), videoBean.getId());
+    }
+
+    @Override
+    protected boolean enableOrientation() {
+        return false;
+    }
+
+    @Override
+    protected ExoPlayerView setExoPlayerView() {
+        return playerView;
+    }
+
+    @Override
+    public void updateFav(boolean isFav) {
+        this.isFav = isFav;
+        if (isFav) {
+            favorBtn.setBackgroundResource(R.drawable.favor_press);
+        } else {
+            favorBtn.setBackgroundResource(R.drawable.favor_nopress);
         }
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_douyin_player);
-        ButterKnife.bind(this);
-        video= (VideoBean) getIntent().getSerializableExtra("video_info");
-        init();
-    }
+    public void updateRandom(List<VideoBean> list) {
 
-    private void init() {
-        videoContent.setText(video.getDescription());
-        simpleExoPlayer=ExoPlayerFactory.newSimpleInstance(this,new DefaultTrackSelector());
-        DataSource.Factory dataSourceFac = new DefaultDataSourceFactory(this, Util.getUserAgent(this, this.getApplication().getPackageName()));
-
-        MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFac)
-                .createMediaSource(Uri.parse(video.getPlayUrl()));
-        exoPlayerView.setPlayer(simpleExoPlayer);
-        exoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
-        simpleExoPlayer.prepare(mediaSource);
-        simpleExoPlayer.setPlayWhenReady(true);
-        simpleExoPlayer.setRepeatMode(REPEAT_MODE_ONE);
-    }
-
-    @OnClick(R.id.back_image)
-    public void onViewClicked() {
-        finish();
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (Build.VERSION.SDK_INT>19){
-            getWindow().getDecorView().setSystemUiVisibility(uiFlag19);
-        }else {
-            getWindow().getDecorView().setSystemUiVisibility(uiFlag14);
+    public void addFavSuc() {
+        dismissLoading();
+        updateFav(true);
+    }
+
+    @Override
+    public void delFavSuc() {
+        dismissLoading();
+        updateFav(false);
+    }
+
+    @Override
+    public void updateComment(List<VideoComment> list) {
+
+    }
+
+    @Override
+    public void updateLogin(boolean b) {
+
+    }
+
+    @Override
+    public void onPresenterSuccess() {
+
+    }
+
+    @Override
+    public void onPresenterFail(String msg) {
+
+    }
+
+    @OnClick({R.id.back_image, R.id.favor_btn, R.id.download_btn})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.back_image:
+                finish();
+                break;
+            case R.id.favor_btn:
+                if (!isFav){
+                    basePresenter.addFav(videoBean.getType(),videoBean.getId());
+                }else {
+                    basePresenter.deleteFav(videoBean.getType(),videoBean.getId());
+                }
+                break;
+            case R.id.download_btn:
+                DownloadActivity.TasksManager.getImpl().addTask(videoBean.getPlayUrl(),videoBean.getTitle());
+                showToast("已添加到下载列表");
+                break;
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        simpleExoPlayer.release();
     }
 }

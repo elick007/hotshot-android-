@@ -115,6 +115,29 @@ public class DefaultFragmentPresenter implements DefaultFragmentContract.Present
 
     @Override
     public void getBanner() {
+        RetrofitService.buildApi().getOERandomVideos()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ResponseBase<List<VideoBean>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(ResponseBase<List<VideoBean>> listResponseBase) {
+                        baseView.updateBanner(listResponseBase.getData());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

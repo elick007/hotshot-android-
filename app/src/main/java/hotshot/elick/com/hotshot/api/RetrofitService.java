@@ -12,7 +12,7 @@ public class RetrofitService {
     private static RetrofitService instance;
     private static Retrofit retrofit;
     private static volatile HotShotApi hotShotApi;
-    public static String BASE_URL="http://172.16.1.235:8000";
+    public static String BASE_URL="http://172.16.100.196:8000";
 
     public static RetrofitService getInstance() {
         if (instance == null) {

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -25,7 +26,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import hotshot.elick.com.hotshot.R;
+import hotshot.elick.com.hotshot.UI.act.player.DouyinPlayerActivity;
 import hotshot.elick.com.hotshot.UI.act.player.PlayerActivity;
+import hotshot.elick.com.hotshot.UI.act.player.PlayerActivityBase;
 import hotshot.elick.com.hotshot.UI.fragments.BaseFragment;
 import hotshot.elick.com.hotshot.adapter.DYRVAdapter;
 import hotshot.elick.com.hotshot.adapter.OEMultiRVAdapter;
@@ -69,16 +72,7 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> impl
     }
 
     private void initBanner() {
-        for (int i = 0; i < 5; i++) {
-            VideoBean videoBean = new VideoBean();
-            videoBean.setPlayUrl("http://baobab.kaiyanapp.com/api/v1/playUrl?vid=151280&resourceType=video&editionType=default&source=aliyun");
-            videoBean.setDescription("i have a pen");
-            videoBean.setTitle("i have an apple");
-            videoBean.setCover("http://img.kaiyanapp.com/7d483bb5fb6b74eb579b9ca06cd96839.jpeg?imageMogr2/quality/60/format/jpg");
-            videoBean.setDate("1551315600000");
-            videoBean.setDuration("237");
-            bannerVideoList.add(videoBean);
-        }
+        basePresenter.getBanner();
         convenientBanner.setPages(new CBViewHolderCreator() {
             @Override
             public NetworkImageLoader createHolder(View itemView) {
@@ -92,6 +86,13 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> impl
         }, bannerVideoList);
         convenientBanner.setPageIndicator(new int[]{R.drawable.banner_bottom_indicator_selected, R.drawable.banner_bottom_indicator_select});
         convenientBanner.setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
+        convenientBanner.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                //PlayerActivity.startUp(context,"oe",bannerVideoList.get(position));
+                PlayerActivityBase.startUp(context,bannerVideoList.get(position));
+            }
+        });
     }
 
     private void initOE() {
@@ -104,13 +105,13 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> impl
         };
 
         defaultVideoFragmentHorizonRv.setAdapter(oeAdapter);
-        defaultVideoFragmentHorizonRv.setLayoutManager(new GridLayoutManager(context,2));
+        defaultVideoFragmentHorizonRv.setLayoutManager(new GridLayoutManager(context, 2));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL);
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.default_fragment_list_divider));
         defaultVideoFragmentHorizonRv.addItemDecoration(dividerItemDecoration);
         //listener
         oeAdapter.setOnItemClickListener((adapter, view, position) -> {
-            PlayerActivity.startUp(context, "oe", (VideoBean) adapter.getData().get(position));
+            PlayerActivityBase.startUp(context,  (VideoBean) adapter.getData().get(position));
             getActivity().overridePendingTransition(R.anim.activity_start_from_bottom_to_top_anim, 0);
         });
     }
@@ -139,8 +140,7 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> impl
         defaultVideoFragmentCardRv.setLayoutManager(gridLayoutManager);
         //listener
         dyAdapter.setOnItemClickListener((adapter, view, position) -> {
-            PlayerActivity.startUp(context, "dy", (VideoBean) adapter.getData().get(position));
-            getActivity().overridePendingTransition(R.anim.activity_start_from_bottom_to_top_anim, 0);
+            PlayerActivityBase.startUp(context, (VideoBean) adapter.getData().get(position));
         });
     }
 
@@ -153,13 +153,9 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> impl
             }
         };
         defaultVideoFragmentVerticalRv.setAdapter(lspAdapter);
-        defaultVideoFragmentVerticalRv.setLayoutManager(new LinearLayoutManager(getContext()));
-//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(deContext, DividerItemDecoration.VERTICAL);
-//        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(deContext, R.drawable.default_fragment_list_divider));
-//        defaultVideoFragmentVerticalRv.addItemDecoration(dividerItemDecoration);
-        //listener
+        defaultVideoFragmentVerticalRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         lspAdapter.setOnItemClickListener((adapter, view, position) -> {
-            PlayerActivity.startUp(context, "lsp", (VideoBean) adapter.getData().get(position));
+            PlayerActivityBase.startUp(context, (VideoBean) adapter.getData().get(position));
             getActivity().overridePendingTransition(R.anim.activity_start_from_bottom_to_top_anim, 0);
         });
     }
@@ -195,7 +191,9 @@ public class DefaultFragment extends BaseFragment<DefaultFragmentPresenter> impl
 
     @Override
     public void updateBanner(List<VideoBean> list) {
-
+        bannerVideoList.clear();
+        bannerVideoList.addAll(list);
+        convenientBanner.notifyDataSetChanged();
     }
 
     static class NetworkImageLoader extends Holder<VideoBean> {

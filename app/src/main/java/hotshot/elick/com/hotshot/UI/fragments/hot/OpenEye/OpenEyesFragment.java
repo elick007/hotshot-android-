@@ -10,6 +10,7 @@ import java.util.List;
 import butterknife.BindView;
 import hotshot.elick.com.hotshot.R;
 import hotshot.elick.com.hotshot.UI.act.player.PlayerActivity;
+import hotshot.elick.com.hotshot.UI.act.player.PlayerActivityBase;
 import hotshot.elick.com.hotshot.UI.fragments.BaseFragment;
 import hotshot.elick.com.hotshot.adapter.OEMultiRVAdapter;
 import hotshot.elick.com.hotshot.entity.VideoBean;
@@ -33,7 +34,7 @@ public class OpenEyesFragment extends BaseFragment<OpenEyePresenter> implements 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter.setOnItemClickListener((adapter, view, position) -> {
-            PlayerActivity.startUp(getContext(), "oe", (VideoBean) adapter.getData().get(position));
+            PlayerActivityBase.startUp(getContext(), (VideoBean) adapter.getData().get(position));
             getActivity().overridePendingTransition(R.anim.activity_start_from_bottom_to_top_anim, 0);
         });
 //        adapter.setEnableLoadMore(true);

@@ -1,14 +1,11 @@
 package hotshot.elick.com.hotshot.UI.act.player;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,22 +13,16 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hotshot.elick.com.hotshot.R;
+import hotshot.elick.com.hotshot.UI.act.dowload.DownloadActivity;
 import hotshot.elick.com.hotshot.adapter.RecommendMultiRVAdapter;
 import hotshot.elick.com.hotshot.api.RetrofitService;
 import hotshot.elick.com.hotshot.entity.VideoBean;
@@ -43,7 +34,7 @@ import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 
-public class PlayerActivity extends PlayerActivityBase<PlayerPresenter> implements PlayerActivityContract.View, CheckBox.OnCheckedChangeListener {
+public class PlayerActivity extends PlayerActivityBase {
     @BindView(R.id.exo_player_view)
     ExoPlayerView playerView;
     @BindView(R.id.recommend_recycler_view)
@@ -56,23 +47,20 @@ public class PlayerActivity extends PlayerActivityBase<PlayerPresenter> implemen
     EditText commentEt;
     @BindView(R.id.comment_ic)
     View commentIc;
-    @BindView(R.id.favor_checkbox)
-    CheckBox favorCheckbox;
-    @BindView(R.id.download_checkbox)
-    CheckBox downloadCheckbox;
-    private VideoBean video;
-    private SimpleExoPlayer simpleExoPlayer;
-    private String channel;
+    @BindView(R.id.favor_btn)
+    Button favorBtn;
+    @BindView(R.id.download_btn)
+    Button downloadBtn;
+
     private List<VideoBean> recommendList = new ArrayList<>();
     private RecommendMultiRVAdapter adapter;
     private List<VideoComment> commentList = new ArrayList<>();
     private BaseQuickAdapter<VideoComment, BaseViewHolder> commentAdapter;
+    private boolean isFav;
 
     @Override
     protected void initView() {
-        Intent intent = getIntent();
-        channel = intent.getStringExtra("channel");
-        video = (VideoBean) intent.getSerializableExtra("video_info");
+        videoBean = (VideoBean) getIntent().getSerializableExtra("video");
         PullDownCloseHeader pullDownCloseHeader = new PullDownCloseHeader(this);
         ptrFrameLayout.addPtrUIHandler(pullDownCloseHeader);
         ptrFrameLayout.setHeaderView(pullDownCloseHeader);
@@ -88,7 +76,7 @@ public class PlayerActivity extends PlayerActivityBase<PlayerPresenter> implemen
                 PlayerActivity.this.finish();
             }
         });
-        basePresenter.retrieveFav(channel, video.getId());
+        basePresenter.retrieveFav(videoBean.getType(), videoBean.getId());
         initPlayer();
         initRecommend();
         initComment();
@@ -96,13 +84,8 @@ public class PlayerActivity extends PlayerActivityBase<PlayerPresenter> implemen
 
     private void initPlayer() {
         playerView.resizeScreen(false);
-        simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(this, new DefaultTrackSelector());
-        simpleExoPlayer.setPlayWhenReady(true);
-        playerView.setPlayer(simpleExoPlayer);
-        playerView.setControllerVisibile();
-        playerView.setControllerShowTimeoutMs(2500);
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
-        updateVideoSource();
+        playerView.setControllerVisibile();
     }
 
 
@@ -123,46 +106,25 @@ public class PlayerActivity extends PlayerActivityBase<PlayerPresenter> implemen
         commentRecyclerView.setAdapter(commentAdapter);
         commentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         commentAdapter.setEmptyView(textView);
-        basePresenter.getCommentList(channel, video.getId());
+        basePresenter.getCommentList(videoBean.getType(), videoBean.getId());
     }
 
     private void initRecommend() {
         if (adapter == null) {
             adapter = new RecommendMultiRVAdapter(R.layout.recommend_recycler_view_item, recommendList);
         }
-        adapter.setHeaderView(new VideoDetailHeader(this, video));
+        adapter.setHeaderView(new VideoDetailHeader(this, videoBean));
         recommendRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         recommendRecyclerView.setAdapter(adapter);
-        basePresenter.getRandomVideos(channel);
+        basePresenter.getRandomVideos(videoBean.getType());
         adapter.setOnItemClickListener((adapter, view, position) -> {
-            this.video = (VideoBean) adapter.getData().get(position);
-            updateVideoSource();
-            favorCheckbox.setOnCheckedChangeListener(null);
-            basePresenter.getRandomVideos(channel);
-            basePresenter.getCommentList(channel, video.getId());
-            basePresenter.retrieveFav(channel, video.getId());
-
+            updateVideoSource((VideoBean) adapter.getData().get(position));
+            basePresenter.getRandomVideos(videoBean.getType());
+            basePresenter.getCommentList(videoBean.getType(), videoBean.getId());
+            basePresenter.retrieveFav(videoBean.getType(), videoBean.getId());
+            adapter.setHeaderView(new VideoDetailHeader(PlayerActivity.this, videoBean));
         });
     }
-
-    private void updateVideoSource() {
-        simpleExoPlayer.stop(true);
-        DataSource.Factory dataSourceFac = new DefaultDataSourceFactory(this, Util.getUserAgent(this, this.getApplication().getPackageName()));
-        MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFac)
-                .createMediaSource(Uri.parse(video.getPlayUrl()));
-        simpleExoPlayer.prepare(mediaSource);
-        if (adapter != null)
-            adapter.setHeaderView(new VideoDetailHeader(this, video));
-    }
-
-
-    public static void startUp(Context context, String channel, VideoBean videoBean) {
-        Intent intent = new Intent(context, PlayerActivity.class);
-        intent.putExtra("channel", channel);
-        intent.putExtra("video_info", videoBean);
-        context.startActivity(intent);
-    }
-
 
     @Override
     public void onPresenterSuccess() {
@@ -172,12 +134,6 @@ public class PlayerActivity extends PlayerActivityBase<PlayerPresenter> implemen
     @Override
     public void onPresenterFail(String msg) {
 
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        simpleExoPlayer.release();
     }
 
     @Override
@@ -209,8 +165,12 @@ public class PlayerActivity extends PlayerActivityBase<PlayerPresenter> implemen
 
     @Override
     public void updateFav(boolean isFav) {
-        favorCheckbox.setChecked(isFav);
-        favorCheckbox.setOnCheckedChangeListener(this);
+        this.isFav = isFav;
+        if (isFav){
+            favorBtn.setBackgroundResource(R.drawable.favor_press);
+        }else {
+            favorBtn.setBackgroundResource(R.drawable.favor_nopress);
+        }
     }
 
     @Override
@@ -223,11 +183,13 @@ public class PlayerActivity extends PlayerActivityBase<PlayerPresenter> implemen
     @Override
     public void addFavSuc() {
         dismissLoading();
+        updateFav(true);
     }
 
     @Override
     public void delFavSuc() {
         dismissLoading();
+        updateFav(false);
     }
 
     @Override
@@ -237,20 +199,30 @@ public class PlayerActivity extends PlayerActivityBase<PlayerPresenter> implemen
         commentAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void updateLogin(boolean b) {
 
-    @OnClick(R.id.comment_ic)
-    public void onViewClicked() {
-        basePresenter.doComment(channel,video.getId(),commentEt.getText().toString().trim());
-        commentEt.setText("");
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        showLoading();
-        if (isChecked) {
-            basePresenter.addFav(channel, video.getId());
-        } else {
-            basePresenter.deleteFav(channel, video.getId());
+
+    @OnClick({R.id.comment_ic, R.id.favor_btn, R.id.download_btn})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.comment_ic:
+                basePresenter.doComment(videoBean.getType(), videoBean.getId(), commentEt.getText().toString().trim());
+                commentEt.setText("");
+                break;
+            case R.id.favor_btn:
+                showLoading();
+                if (!isFav)
+                    basePresenter.addFav(videoBean.getType(), videoBean.getId());
+                else
+                    basePresenter.deleteFav(videoBean.getType(), videoBean.getId());
+                break;
+            case R.id.download_btn:
+                DownloadActivity.TasksManager.getImpl().addTask(videoBean.getPlayUrl(),videoBean.getTitle());
+                showToast("已添加到下载列表");
+                break;
         }
     }
 }

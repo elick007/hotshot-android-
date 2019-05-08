@@ -41,7 +41,10 @@
         <activity
             android:name=".UI.act.register.RegisterActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".UI.act.alterInfo.AlterUserInfoAct"/>
+        <activity android:name=".UI.act.alterInfo.AlterUserInfoAct" />
+        <activity android:name=".UI.act.history.HistoryActivity" />
+        <activity android:name=".UI.act.favorite.FavActivity" />
+        <activity android:name=".UI.act.dowload.DownloadActivity"></activity>
     </application>
 
 </manifest>

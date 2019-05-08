@@ -6,7 +6,10 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
 
+import com.liulishuo.filedownloader.FileDownloader;
+
 import hotshot.elick.com.hotshot.api.RetrofitService;
+import hotshot.elick.com.hotshot.data.HistoryVideoData;
 import hotshot.elick.com.hotshot.data.UserInfoData;
 import hotshot.elick.com.hotshot.utils.MyLog;
 
@@ -16,12 +19,13 @@ public class MyApplication extends Application {
 
     public SharedPreferences sp;
     public UserInfoData userInfoData;
-
+    public HistoryVideoData historyVideoData;
     @Override
     public void onCreate() {
         super.onCreate();
         MyLog.setDebug(true);
         RetrofitService.getInstance().init();
+        FileDownloader.setup(this);
     }
 
     @Override
@@ -36,6 +40,7 @@ public class MyApplication extends Application {
         }
         sp = PreferenceManager.getDefaultSharedPreferences(deContext);
         userInfoData = new UserInfoData(base);
+        historyVideoData=new HistoryVideoData(base);
     }
 
     public String getToken() {

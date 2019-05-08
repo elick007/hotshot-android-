@@ -13,6 +13,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import hotshot.elick.com.hotshot.R;
 import hotshot.elick.com.hotshot.UI.act.alterInfo.AlterUserInfoAct;
+import hotshot.elick.com.hotshot.UI.act.dowload.DownloadActivity;
+import hotshot.elick.com.hotshot.UI.act.favorite.FavActivity;
+import hotshot.elick.com.hotshot.UI.act.history.HistoryActivity;
 import hotshot.elick.com.hotshot.UI.act.login.LoginActivity;
 import hotshot.elick.com.hotshot.UI.fragments.BaseFragment;
 import hotshot.elick.com.hotshot.api.RetrofitService;
@@ -101,10 +104,18 @@ public class MineFragment extends BaseFragment<MinePresenter> implements MineFra
             case R.id.mine_fragment_change_info:
                 break;
             case R.id.mine_fragment_history:
+                    Intent intent=new Intent(context, HistoryActivity.class);
+                    startActivity(intent);
                 break;
             case R.id.mine_fragment_favor:
+                if (isLogin){
+                    startActivity(new Intent(context, FavActivity.class));
+                }else {
+                    showToast("未登录");
+                }
                 break;
             case R.id.mine_fragment_download:
+                startActivity(new Intent(context, DownloadActivity.class));
                 break;
             case R.id.mine_fragment_setting:
                 break;

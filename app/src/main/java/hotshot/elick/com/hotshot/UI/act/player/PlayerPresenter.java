@@ -21,10 +21,10 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class PlayerPresenter implements PlayerActivityContract.Presenter {
-    private PlayerActivity playerActivity;
+    private PlayerActivityBase playerActivity;
     private String token;
 
-    public PlayerPresenter(PlayerActivity playerActivity) {
+    public PlayerPresenter(PlayerActivityBase playerActivity) {
         this.playerActivity = playerActivity;
         this.token = MyApplication.self.getToken();
     }
@@ -61,6 +61,7 @@ public class PlayerPresenter implements PlayerActivityContract.Presenter {
                     });
         } else {
             MyLog.d("token is empty");
+            playerActivity.updateLogin(false);
         }
     }
 
@@ -80,6 +81,7 @@ public class PlayerPresenter implements PlayerActivityContract.Presenter {
                         public void onNext(ResponseBase responseBase) {
                             if (responseBase.getCode() == 1) {
                                 playerActivity.dismissLoading();
+                                playerActivity.updateFav(true);
                             }
                         }
 
@@ -95,6 +97,8 @@ public class PlayerPresenter implements PlayerActivityContract.Presenter {
                     });
         } else {
             playerActivity.showToast("暂未登录");
+            playerActivity.updateFav(false);
+            playerActivity.addFavSuc();
         }
     }
 
@@ -229,6 +233,7 @@ public class PlayerPresenter implements PlayerActivityContract.Presenter {
             }
         }
     }
+
 
     @Override
     public void attachView(BaseView baseView) {

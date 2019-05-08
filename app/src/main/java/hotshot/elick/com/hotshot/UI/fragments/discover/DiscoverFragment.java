@@ -141,7 +141,6 @@ public class DiscoverFragment extends BaseFragment<DiscoverPresenter> implements
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        MyLog.e("what happen");
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case VIDEO_CODE:

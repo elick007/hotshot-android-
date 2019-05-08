@@ -11,6 +11,7 @@
     <dimen name="bottom_text_size">11sp</dimen>
     <dimen name="item_text_size_title">18sp</dimen>
     <dimen name="item_text_size_author">14sp</dimen>
+    <dimen name="toolbar_height">48dp</dimen>
     <declare-styleable name="PullDownEventView">
         <attr name="text_bg_color" format="color" />
     </declare-styleable>

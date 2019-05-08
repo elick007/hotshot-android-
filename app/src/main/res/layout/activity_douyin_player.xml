@@ -23,4 +23,20 @@
         android:textColor="@color/white"
         android:alpha="0.6"
         android:maxLines="4"/>
+    <Button
+        android:id="@+id/favor_btn"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:background="@drawable/favor_nopress"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="88dp"
+        android:layout_marginRight="8dp"/>
+    <Button
+        android:id="@+id/download_btn"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:background="@drawable/download_nopress"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="36dp"
+        android:layout_marginRight="8dp"/>
 </FrameLayout>

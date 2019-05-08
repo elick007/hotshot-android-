@@ -68,6 +68,8 @@ import java.util.List;
 
 import hotshot.elick.com.hotshot.R;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 /**
  * A high level view for {@link Player} media playbacks. It displays video, subtitles and album art
  * during playback, and displays playback controls using a {@link PlayerControlView}.
@@ -357,7 +359,7 @@ public class ExoPlayerView extends FrameLayout {
         if (contentFrame != null && surfaceType != SURFACE_TYPE_NONE) {
             ViewGroup.LayoutParams params =
                     new ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                            MATCH_PARENT, MATCH_PARENT);
             surfaceView =
                     surfaceType == SURFACE_TYPE_TEXTURE_VIEW
                             ? new TextureView(context)
@@ -1337,15 +1339,18 @@ public class ExoPlayerView extends FrameLayout {
     //横竖屏设置
     private final int screenWidth = getResources().getDisplayMetrics().widthPixels;
     private final int screenHeight = screenWidth * 9 / 16;
-    private final LinearLayout.LayoutParams portraitLayoutParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight);
-    private final LinearLayout.LayoutParams landscapeLayoutParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
     public void resizeScreen(boolean isFullscreen) {
+        ViewGroup.LayoutParams layoutParams=getLayoutParams();
         if (isFullscreen) {
-            this.setLayoutParams(landscapeLayoutParam);
+            layoutParams.width=MATCH_PARENT;
+            layoutParams.height=MATCH_PARENT;
+            this.setLayoutParams(layoutParams);
             bottomProgress.setVisibility(INVISIBLE);
         } else {
-            this.setLayoutParams(portraitLayoutParam);
+            layoutParams.width=MATCH_PARENT;
+            layoutParams.height=screenHeight;
+            this.setLayoutParams(layoutParams);
             bottomProgress.setVisibility(VISIBLE);
         }
         controller.changeFullScreenImage(isFullscreen);

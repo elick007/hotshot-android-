@@ -23,5 +23,6 @@ public interface PlayerActivityContract {
         void addFavSuc();
         void delFavSuc();
         void updateComment(List<VideoComment> list);
+        void updateLogin(boolean b);
     }
 }

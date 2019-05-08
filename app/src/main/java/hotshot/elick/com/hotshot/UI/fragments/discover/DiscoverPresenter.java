@@ -11,10 +11,12 @@ import hotshot.elick.com.hotshot.baseMVP.BaseView;
 import hotshot.elick.com.hotshot.entity.PubVideoBean;
 import hotshot.elick.com.hotshot.entity.ResponseBase;
 import hotshot.elick.com.hotshot.utils.MyLog;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -80,17 +82,26 @@ public class DiscoverPresenter implements DiscoverFragmentContract.Presenter {
                 RequestBody suffix = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
                 RequestBody videoContent = RequestBody.create(MediaType.parse("multipart/form-data"), content);
                 RetrofitService.buildApi().uploadVideo(suffix, part, videoContent, token)
+                        .flatMap((Function<ResponseBase, ObservableSource<ResponseBase<List<PubVideoBean>>>>) responseBase -> {
+                            if (responseBase.getCode() == 1) {
+                                return RetrofitService.buildApi().getPubVideos();
+                            } else {
+                                discoverFragment.showToast(responseBase.getMsg());
+                                return null;
+                            }
+                        })
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<ResponseBase>() {
+                        .subscribe(new Observer<ResponseBase<List<PubVideoBean>>>() {
                             @Override
                             public void onSubscribe(Disposable d) {
                                 discoverFragment.showLoading();
                             }
 
                             @Override
-                            public void onNext(ResponseBase responseBase) {
+                            public void onNext(ResponseBase<List<PubVideoBean>> listResponseBase) {
                                 discoverFragment.dismissLoading();
+                                discoverFragment.updateList(listResponseBase.getData());
                             }
 
                             @Override

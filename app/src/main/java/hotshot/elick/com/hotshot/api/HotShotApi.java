@@ -100,8 +100,8 @@ public interface HotShotApi {
     Observable<ResponseBase> delFav(@Path("channel") String channel,@Field("videoId") int videoId,@Header("Authorization") String token);
 
     //视频收藏列表
-    @GET("/api/user/favorite/oe/?ac=list")
-    Observable<ResponseBase<List<FavVideo>>> listFav(@Path("channel") String channel, @Query("videoId") int videoId, @Header("Authorization") String token);
+    @GET("/api/user/favorite/{channel}/?ac=list")
+    Observable<ResponseBase<List<FavVideo>>> listFav(@Path("channel") String channel, @Header("Authorization") String token);
 
     //视频评论列表
     @GET("/api/videos/{channel}/comment/list")
